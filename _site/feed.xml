@@ -5,9 +5,20 @@
     <description>Write your site description here. It will be used as your sites meta description as well!</description>
     <link>http://ashwin153.github.io/</link>
     <atom:link href="http://ashwin153.github.io/feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Tue, 05 May 2015 16:04:16 -0500</pubDate>
-    <lastBuildDate>Tue, 05 May 2015 16:04:16 -0500</lastBuildDate>
+    <pubDate>Tue, 05 May 2015 16:52:24 -0500</pubDate>
+    <lastBuildDate>Tue, 05 May 2015 16:52:24 -0500</lastBuildDate>
     <generator>Jekyll v2.5.3</generator>
+    
+      <item>
+        <title>PacMan: Recreating the arcade classic</title>
+        <description>&lt;p&gt;Over the past few months, I have spent a lot of time tinkering with genetic algorithms and neural networks. In previous projects, I have used these genetic algorithms and neural networks to solve simple problems (e.g., function minimization, maze solving, pattern recognition, etc.). However, the more I experimented with these primitives of artificial intelligence, the more I wanted to apply them to larger, more complicated problems. An article I read on &lt;a href=&quot;http://kotaku.com/you-can-play-pac-man-on-google-maps-right-now-1694756745&quot;&gt;Kotaku&lt;/a&gt; inspired me to apply my knowledge of artificial intelligence to recreating PacMan.&lt;/p&gt;
+</description>
+        <pubDate>Mon, 04 May 2015 23:08:00 -0500</pubDate>
+        <link>http://ashwin153.github.io/2015/05/04/pacman/</link>
+        <guid isPermaLink="true">http://ashwin153.github.io/2015/05/04/pacman/</guid>
+        
+        
+      </item>
     
   </channel>
 </rss>
