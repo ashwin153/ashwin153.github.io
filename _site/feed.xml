@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Ashwin Madavan</title>
+    <description>Write your site description here. It will be used as your sites meta description as well!</description>
+    <link>http://ashwin153.github.io/</link>
+    <atom:link href="http://ashwin153.github.io/feed.xml" rel="self" type="application/rss+xml" />
+    <pubDate>Tue, 05 May 2015 16:04:16 -0500</pubDate>
+    <lastBuildDate>Tue, 05 May 2015 16:04:16 -0500</lastBuildDate>
+    <generator>Jekyll v2.5.3</generator>
+    
+  </channel>
+</rss>
