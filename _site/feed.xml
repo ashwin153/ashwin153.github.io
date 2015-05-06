@@ -5,13 +5,27 @@
     <description>Write your site description here. It will be used as your sites meta description as well!</description>
     <link>http://ashwin153.github.io/</link>
     <atom:link href="http://ashwin153.github.io/feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Tue, 05 May 2015 17:27:26 -0500</pubDate>
-    <lastBuildDate>Tue, 05 May 2015 17:27:26 -0500</lastBuildDate>
+    <pubDate>Tue, 05 May 2015 20:48:21 -0500</pubDate>
+    <lastBuildDate>Tue, 05 May 2015 20:48:21 -0500</lastBuildDate>
     <generator>Jekyll v2.5.3</generator>
     
       <item>
         <title>PacMan: Recreating the arcade classic</title>
         <description>&lt;p&gt;Over the past few months, I have spent a lot of time tinkering with genetic algorithms and neural networks. In previous projects, I have used these genetic algorithms and neural networks to solve simple problems (e.g., function minimization, maze solving, pattern recognition, etc.). However, the more I experimented with these primitives of artificial intelligence, the more I wanted to apply them to larger, more complicated problems. An article I read on &lt;a href=&quot;http://kotaku.com/you-can-play-pac-man-on-google-maps-right-now-1694756745&quot;&gt;Kotaku&lt;/a&gt; inspired me to apply my knowledge of artificial intelligence to recreating PacMan.&lt;/p&gt;
+
+&lt;p&gt;To view the complete source code, technical report, and documentation, please refer to the &lt;a href=&quot;https://github.com/ashwin153/pacman&quot;&gt;GitHub Repository&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h1 id=&quot;gameplay&quot;&gt;Gameplay&lt;/h1&gt;
+&lt;p&gt;I could not find an open source implementation of PacMan in Java, so I decided to write my own version. Using the &lt;a href=&quot;http://home.comcast.net/~jpittman2/pacman/pacmandossier.html&quot;&gt;Pacman Dossier&lt;/a&gt; as a reference, I built PacMan from scratch. I used GIMP 2.8 to design the sprites and background, and used Swing to display the GUI. The picture below depicts the completed interface.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/img/pacman-game.png&quot; alt=&quot;Game&quot; title=&quot;My PacMan Game&quot; /&gt;&lt;/p&gt;
+
+&lt;h1 id=&quot;artificial-intelligence&quot;&gt;Artificial Intelligence&lt;/h1&gt;
+&lt;p&gt;I created a feed-forward neural network and taught it to play PacMan using a binary genetic algorithm. This network accepts twelve different inputs: (1) the distances from each of the ghosts to PacMan, (2) whether or not each of the ghosts is moving toward PacMan, (3) the mode that each of the ghosts are in, (4) the location (x, y) of the closest “food” tile, and (5) the location (x, y) of the closest “energizer” tile. The network outputs four values, each of which is in the range [0.0, 1.0]. Each output corresponds to a different orientation (up, down, left, right). Each time PacMan needs to make a decision about which direction to move in, it selects the orientation with the highest output.&lt;/p&gt;
+
+&lt;p&gt;The weights of the neural network were determined by a genetic algorithm. The genetic algorithm quickly played an entire game using a particular set of weights and determined the “fitness” of these weights by calculating 1.0 / (elapsedTime + score). Over many generations, the genetic algorithm determined the optimal set of weights by minimizing this fitness function.&lt;/p&gt;
+
+&lt;p&gt;The trained neural network worked surprisingly well. It was able to last for 22 seconds and earned 1740 points! In comparison, an untrained neural network with randomly generated weights earned an average of 86.4 points over 5 trials. Therefore, the training process increased performance by over 2013%!&lt;/p&gt;
 
 &lt;p&gt;Cover photograph by &lt;a href=&quot;http://www.ivanbrooker.com/wallpaper/pin-pacman-wallpaper-on-pinterest.html&quot;&gt;Ivan Brooker&lt;/a&gt;.&lt;/p&gt;
 </description>
