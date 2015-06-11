@@ -7,3 +7,5 @@ header-img:	"img/salesforce-bg.jpg"
 ---
 
 I spent this past summer working for Salesforce.
+
+Cover photograph from [Glance](http://ww2.glance.net/partners/salesforce-integration/).
