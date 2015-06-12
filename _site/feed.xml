@@ -2,12 +2,94 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Ashwin Madavan</title>
-    <description>Write your site description here. It will be used as your sites meta description as well!</description>
+    <description>The work and thoughts of a programmer</description>
     <link>http://ashwin153.github.io/</link>
     <atom:link href="http://ashwin153.github.io/feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Wed, 06 May 2015 12:04:56 -0500</pubDate>
-    <lastBuildDate>Wed, 06 May 2015 12:04:56 -0500</lastBuildDate>
+    <pubDate>Thu, 11 Jun 2015 17:50:28 -0700</pubDate>
+    <lastBuildDate>Thu, 11 Jun 2015 17:50:28 -0700</lastBuildDate>
     <generator>Jekyll v2.5.3</generator>
+    
+      <item>
+        <title>Stocks: Automated DCF Analysis</title>
+        <description>&lt;h1 id=&quot;what-is-a-dcf&quot;&gt;What is a DCF?&lt;/h1&gt;
+&lt;p&gt;If you were offered $1 today or $1 a year from now, which would you take? A smart businessman would take the dollar today. Why? Because the present value of the future $1, is actually only around 90¢ after adjusting for inflation and other economic factors. The idea that money in the future is worth less in the present is often referred to as the &lt;strong&gt;time value of money&lt;/strong&gt;, and it is the fundamental principle behind discounted cash flow analysis.&lt;/p&gt;
+
+&lt;p&gt;The share price of a company is equal to its present value divided by its total number of outstanding shares. If it were possible to know both how much a company will be worth in future and how much that future value is worth in the present, it would be possible to determine what the share price of the company &lt;em&gt;should be&lt;/em&gt; right now (fair value). In reality, there are only two ways of knowing either of these for certain: you are God or you are cheating. The purpose of discounted cash flow analysis is to &lt;em&gt;estimate&lt;/em&gt; the fair value of a company by approximating its future free cash flows and discounting that amount to compensate for inflation, risk, and the passage of time. If this fair value of the company is less than its current share price, the stock is overvalued and represents a sell opportunity and if the fair value is greater than the current share price, the stock is undervalued and represents a buy opportunity.&lt;/p&gt;
+
+&lt;h1 id=&quot;determining-free-cash-flow&quot;&gt;Determining Free Cash Flow&lt;/h1&gt;
+&lt;p&gt;It turns out that free cash flow is a very well defined concept in financial circles. Free cash flow measures how much cash a business has after subtracting out expenditures, taxes, and investments. Therefore, determining &lt;em&gt;future&lt;/em&gt; free cash flow simply requires forecasting future revenues and subtracting out future expenditures, taxes, and investments. I developed an automated forecasting engine that utilizes a series of neural networks to predict the future free cash flows of any publicly traded company.&lt;/p&gt;
+
+&lt;h3 id=&quot;give-me-data-or-give-me-death&quot;&gt;Give me data or give me death&lt;/h3&gt;
+&lt;p&gt;Neural networks are useless without training data. Luckily, the Securities and Exchange Commission (SEC) publishes massive datasets containing every financial document from every publicly traded company. I developed a SQL script that parses these datasets, extracts out useful information, and stores it inside a relational database from which I can efficiently store and effectively query the data. Once I had scraped and stored the data, I utilized the Hibernate ORM framework to map my Java models to database tables and to gain access to the powerful Criteria API.&lt;/p&gt;
+
+&lt;h3 id=&quot;too-much-of-a-good-thing&quot;&gt;Too much of a good thing&lt;/h3&gt;
+&lt;p&gt;My SEC parser ended up working much, much better than I expected. I ended up with &lt;strong&gt;18,105,547&lt;/strong&gt; data points for &lt;strong&gt;9,303&lt;/strong&gt; unique companies spread across &lt;strong&gt;450&lt;/strong&gt; industries. In order to deal with the massive volume of data, I developed an algorithm to filter out the less important data points. This algorithm first categorizes companies by industry (using their sic codes!) and then determines which data points appear &lt;em&gt;most often&lt;/em&gt; in financial statements for companies within a particular industrial sector.&lt;/p&gt;
+
+&lt;h3 id=&quot;designing-the-neural-networks&quot;&gt;Designing the neural networks&lt;/h3&gt;
+&lt;p&gt;The automated forecasting engine is composed of a collection of neural networks, each of which outputs the predicted quarter-over-quarter growth rate of a different component of the free cash flow formula using the “most important” data points as inputs. These networks were then trained via backpropagation on historical SEC financial data.&lt;/p&gt;
+
+&lt;h3 id=&quot;preliminary-results&quot;&gt;Preliminary results&lt;/h3&gt;
+&lt;p&gt;The forecasting engine worked surprisingly well! I trained the engine on sic code 1311 (Crude Petroleum &amp;amp; Natural Gas) and then used the engine to forecast the future free cash flow of Apco Oil and Gas International, Inc. By applying some of the same optimization techniques that I used when computing revenues and operating costs, I believe I can substantially reduce the errors in some of the other measurements.&lt;/p&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th style=&quot;text-align: left&quot;&gt;Term&lt;/th&gt;
+      &lt;th style=&quot;text-align: center&quot;&gt;Predicted (MUSD)&lt;/th&gt;
+      &lt;th style=&quot;text-align: center&quot;&gt;Actual (MUSD)&lt;/th&gt;
+      &lt;th style=&quot;text-align: left&quot;&gt;Error&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;Revenues&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;45.39&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;46.34&lt;/td&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;-2.05%&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;Operating Costs&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;35.85&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;35.05&lt;/td&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;2.28%&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;Taxes&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;4.14&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;4.48&lt;/td&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;-7.59%&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;Investments&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;4.76&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;5.81&lt;/td&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;18.07%&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;Assets&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;87.43&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;76.25&lt;/td&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;14.66%&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;Liabilities&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;47.25&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;38.69&lt;/td&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;22.12%&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;Work in progress! Check back for updates.&lt;/p&gt;
+
+&lt;p&gt;Cover photograph from [NepseForum] (http://nepseforum.com/).&lt;/p&gt;
+</description>
+        <pubDate>Tue, 19 May 2015 22:20:00 -0700</pubDate>
+        <link>http://ashwin153.github.io/2015/05/19/stocks/</link>
+        <guid isPermaLink="true">http://ashwin153.github.io/2015/05/19/stocks/</guid>
+        
+        
+      </item>
     
       <item>
         <title>PacMan: Recreating the Arcade Classic</title>
@@ -29,7 +111,7 @@
 
 &lt;p&gt;Cover photograph by &lt;a href=&quot;http://www.ivanbrooker.com/wallpaper/pin-pacman-wallpaper-on-pinterest.html&quot;&gt;Ivan Brooker&lt;/a&gt;.&lt;/p&gt;
 </description>
-        <pubDate>Sun, 19 Apr 2015 23:20:00 -0500</pubDate>
+        <pubDate>Sun, 19 Apr 2015 21:20:00 -0700</pubDate>
         <link>http://ashwin153.github.io/2015/04/19/pacman/</link>
         <guid isPermaLink="true">http://ashwin153.github.io/2015/04/19/pacman/</guid>
         

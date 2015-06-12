@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="The work and thoughts of a programmer">
+
+    <title>Stocks: Automated DCF Analysis - Ashwin Madavan</title>
+
+    <link rel="canonical" href="http://ashwin153.github.io/2015/05/19/stocks/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/clean-blog.css">
+
+    <!-- Pygments Github CSS -->
+    <link rel="stylesheet" href="/css/syntax.css">
+
+    <!-- Custom Fonts -->
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href='//fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+
+
+<body>
+
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Ashwin Madavan</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <a href="/">Home</a>
+                </li>
+                
+                <li>
+                    <a href="/about/">About</a>
+                </li>
+                
+                <li>
+                    <a href="/contact/">Contact</a>
+                </li>
+                
+            </ul>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+
+
+    <!-- Post Header -->
+<header class="intro-header" style="background-image: url('/img/stocks-bg.png')">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <h1>Stocks: Automated DCF Analysis</h1>
+                    
+                    <span class="meta">Posted by Ashwin Madavan on May 19, 2015</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+
+				<h1 id="what-is-a-dcf">What is a DCF?</h1>
+<p>If you were offered $1 today or $1 a year from now, which would you take? A smart businessman would take the dollar today. Why? Because the present value of the future $1, is actually only around 90¢ after adjusting for inflation and other economic factors. The idea that money in the future is worth less in the present is often referred to as the <strong>time value of money</strong>, and it is the fundamental principle behind discounted cash flow analysis.</p>
+
+<p>The share price of a company is equal to its present value divided by its total number of outstanding shares. If it were possible to know both how much a company will be worth in future and how much that future value is worth in the present, it would be possible to determine what the share price of the company <em>should be</em> right now (fair value). In reality, there are only two ways of knowing either of these for certain: you are God or you are cheating. The purpose of discounted cash flow analysis is to <em>estimate</em> the fair value of a company by approximating its future free cash flows and discounting that amount to compensate for inflation, risk, and the passage of time. If this fair value of the company is less than its current share price, the stock is overvalued and represents a sell opportunity and if the fair value is greater than the current share price, the stock is undervalued and represents a buy opportunity.</p>
+
+<h1 id="determining-free-cash-flow">Determining Free Cash Flow</h1>
+<p>It turns out that free cash flow is a very well defined concept in financial circles. Free cash flow measures how much cash a business has after subtracting out expenditures, taxes, and investments. Therefore, determining <em>future</em> free cash flow simply requires forecasting future revenues and subtracting out future expenditures, taxes, and investments. I developed an automated forecasting engine that utilizes a series of neural networks to predict the future free cash flows of any publicly traded company.</p>
+
+<h3 id="give-me-data-or-give-me-death">Give me data or give me death</h3>
+<p>Neural networks are useless without training data. Luckily, the Securities and Exchange Commission (SEC) publishes massive datasets containing every financial document from every publicly traded company. I developed a SQL script that parses these datasets, extracts out useful information, and stores it inside a relational database from which I can efficiently store and effectively query the data. Once I had scraped and stored the data, I utilized the Hibernate ORM framework to map my Java models to database tables and to gain access to the powerful Criteria API.</p>
+
+<h3 id="too-much-of-a-good-thing">Too much of a good thing</h3>
+<p>My SEC parser ended up working much, much better than I expected. I ended up with <strong>18,105,547</strong> data points for <strong>9,303</strong> unique companies spread across <strong>450</strong> industries. In order to deal with the massive volume of data, I developed an algorithm to filter out the less important data points. This algorithm first categorizes companies by industry (using their sic codes!) and then determines which data points appear <em>most often</em> in financial statements for companies within a particular industrial sector.</p>
+
+<h3 id="designing-the-neural-networks">Designing the neural networks</h3>
+<p>The automated forecasting engine is composed of a collection of neural networks, each of which outputs the predicted quarter-over-quarter growth rate of a different component of the free cash flow formula using the “most important” data points as inputs. These networks were then trained via backpropagation on historical SEC financial data.</p>
+
+<h3 id="preliminary-results">Preliminary results</h3>
+<p>The forecasting engine worked surprisingly well! I trained the engine on sic code 1311 (Crude Petroleum &amp; Natural Gas) and then used the engine to forecast the future free cash flow of Apco Oil and Gas International, Inc. By applying some of the same optimization techniques that I used when computing revenues and operating costs, I believe I can substantially reduce the errors in some of the other measurements.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: left">Term</th>
+      <th style="text-align: center">Predicted (MUSD)</th>
+      <th style="text-align: center">Actual (MUSD)</th>
+      <th style="text-align: left">Error</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: left">Revenues</td>
+      <td style="text-align: center">45.39</td>
+      <td style="text-align: center">46.34</td>
+      <td style="text-align: left">-2.05%</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">Operating Costs</td>
+      <td style="text-align: center">35.85</td>
+      <td style="text-align: center">35.05</td>
+      <td style="text-align: left">2.28%</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">Taxes</td>
+      <td style="text-align: center">4.14</td>
+      <td style="text-align: center">4.48</td>
+      <td style="text-align: left">-7.59%</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">Investments</td>
+      <td style="text-align: center">4.76</td>
+      <td style="text-align: center">5.81</td>
+      <td style="text-align: left">18.07%</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">Assets</td>
+      <td style="text-align: center">87.43</td>
+      <td style="text-align: center">76.25</td>
+      <td style="text-align: left">14.66%</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">Liabilities</td>
+      <td style="text-align: center">47.25</td>
+      <td style="text-align: center">38.69</td>
+      <td style="text-align: left">22.12%</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Work in progress! Check back for updates.</p>
+
+<p>Cover photograph from [NepseForum] (http://nepseforum.com/).</p>
+
+
+                <hr>
+
+                <ul class="pager">
+                    
+                    <li class="previous">
+                        <a href="/2015/04/19/pacman/" data-toggle="tooltip" data-placement="top" title="PacMan: Recreating the Arcade Classic">&larr; Previous Post</a>
+                    </li>
+                    
+                    
+                </ul>
+
+            </div>
+        </div>
+    </div>
+</article>
+
+<hr>
+
+
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                    <li>
+                        <a href="/feed.xml">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-rss fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                    
+                    
+                    <li>
+                        <a href="https://www.facebook.com/ashwin.madavan">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-facebook fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                    
+                    
+                    <li>
+                        <a href="https://github.com/ashwin153">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                    
+                </ul>
+                <p class="copyright text-muted">Copyright &copy; Ashwin Madavan 2015</p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js "></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js "></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/clean-blog.min.js "></script>
+
+
+</body>
+
+</html>
