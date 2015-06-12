@@ -5,13 +5,15 @@
     <description>The work and thoughts of a programmer</description>
     <link>http://ashwin153.github.io/</link>
     <atom:link href="http://ashwin153.github.io/feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Thu, 11 Jun 2015 17:58:44 -0700</pubDate>
-    <lastBuildDate>Thu, 11 Jun 2015 17:58:44 -0700</lastBuildDate>
+    <pubDate>Fri, 12 Jun 2015 01:22:47 -0700</pubDate>
+    <lastBuildDate>Fri, 12 Jun 2015 01:22:47 -0700</lastBuildDate>
     <generator>Jekyll v2.5.3</generator>
     
       <item>
-        <title>Stocks: Automated DCF Analysis</title>
-        <description>&lt;h1 id=&quot;what-is-a-dcf&quot;&gt;What is a DCF?&lt;/h1&gt;
+        <title>Automated DCF Analysis</title>
+        <description>&lt;p&gt;The full code and documentation is available on &lt;a href=&quot;https://github.com/ashwin153/stocks&quot;&gt;Github&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h1 id=&quot;what-is-a-dcf&quot;&gt;What is a DCF?&lt;/h1&gt;
 &lt;p&gt;If you were offered $1 today or $1 a year from now, which would you take? A smart businessman would take the dollar today. Why? Because the present value of the future $1, is actually only around 90¢ after adjusting for inflation and other economic factors. The idea that money in the future is worth less in the present is often referred to as the &lt;strong&gt;time value of money&lt;/strong&gt;, and it is the fundamental principle behind discounted cash flow analysis.&lt;/p&gt;
 
 &lt;p&gt;The share price of a company is equal to its present value divided by its total number of outstanding shares. If it were possible to know both how much a company will be worth in future and how much that future value is worth in the present, it would be possible to determine what the share price of the company &lt;em&gt;should be&lt;/em&gt; right now (fair value). In reality, there are only two ways of knowing either of these for certain: you are God or you are cheating. The purpose of discounted cash flow analysis is to &lt;em&gt;estimate&lt;/em&gt; the fair value of a company by approximating its future free cash flows and discounting that amount to compensate for inflation, risk, and the passage of time. If this fair value of the company is less than its current share price, the stock is overvalued and represents a sell opportunity and if the fair value is greater than the current share price, the stock is undervalued and represents a buy opportunity.&lt;/p&gt;
@@ -80,9 +82,10 @@
   &lt;/tbody&gt;
 &lt;/table&gt;
 
+&lt;h1 id=&quot;determining-the-discount-rate&quot;&gt;Determining the Discount Rate&lt;/h1&gt;
 &lt;p&gt;Work in progress! Check back for updates.&lt;/p&gt;
 
-&lt;p&gt;Cover photograph from &lt;a href=&quot;http://nepseforum.com/&quot;&gt;Nepse Forum&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;Cover photograph from &lt;a href=&quot;http://www.nepseforum.com/&quot;&gt;Nepse Forum&lt;/a&gt;.&lt;/p&gt;
 </description>
         <pubDate>Tue, 19 May 2015 22:20:00 -0700</pubDate>
         <link>http://ashwin153.github.io/2015/05/19/stocks/</link>
@@ -114,6 +117,73 @@
         <pubDate>Sun, 19 Apr 2015 21:20:00 -0700</pubDate>
         <link>http://ashwin153.github.io/2015/04/19/pacman/</link>
         <guid isPermaLink="true">http://ashwin153.github.io/2015/04/19/pacman/</guid>
+        
+        
+      </item>
+    
+      <item>
+        <title>Music Generation Using Markov Chains</title>
+        <description>&lt;p&gt;Markov chains are “random processes that undergo transitions from one state to another on a given state space.” (Wikipedia). Markov chains must be “memoryless”; in other words, the probability distribution of their next state only depends on their current state and not on the states that preceded it. I developed a Java implementation of a Markov Chain using a hash map that associates an event (prefix) with a list of possible outcomes (suffixes).&lt;/p&gt;
+
+&lt;p&gt;The full code and documentation is available on &lt;a href=&quot;https://github.com/ashwin153/cs-314h/tree/master/assignments/prog2&quot;&gt;Github&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h1 id=&quot;random-writing&quot;&gt;Random Writing&lt;/h1&gt;
+&lt;p&gt;In the case of text, events are represented as character strings of length k. Each occurence of every character string of length k is mapped to the character string of length k that immediately follows it (note that the first k-1 characters of the prefix and suffix are the same; the only difference is the last character). This process continues until the program consumes the entire input file. The program then randomly selects one of the prefix events in the mapping. It randomly selects one of the associated “suffix” events (suffix events that appear more often after a prefix have a greater probability of being selected), outputs the unique kth character, and sets the new seed as the suffix event. It then repeats this process until an output of character string of suitable size has been created.&lt;/p&gt;
+
+&lt;h1 id=&quot;random-music&quot;&gt;Random Music&lt;/h1&gt;
+&lt;p&gt;I adapted my text-based implementation of Markov Chains to handle musical MIDI files as well. MIDI files contain information about each note played by each instrument in a musical piece. In the case of music, events are represented as all the notes played by all the instruments over k timesteps (length of timestep varies from song to song). The program consumes the input file and uses it to generate a completely new song. This new song will share many of the same chord progressions and note patterns, but it is randomized and original. One of the most challenging aspects of this project was ensuring that the music stayed on beat. To do this, I added small (almost) inaudible silences between notes that shift the beat over slightly to ensure that the song stays in meter.&lt;/p&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th style=&quot;text-align: left&quot;&gt;Artist&lt;/th&gt;
+      &lt;th style=&quot;text-align: left&quot;&gt;Song&lt;/th&gt;
+      &lt;th style=&quot;text-align: center&quot;&gt;k&lt;/th&gt;
+      &lt;th style=&quot;text-align: center&quot;&gt;Link&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;Skrillex&lt;/td&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;Scary Monsters&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;1&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;http://goo.gl/8B8fHu&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;Skrillex&lt;/td&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;Scary Monsters&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;4&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;http://goo.gl/TrIy5m&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;Skrillex&lt;/td&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;Scary Monsters&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;8&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;http://goo.gl/GpYXAf&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;Led Zeppelin&lt;/td&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;Stairway to Heaven&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;8&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;http://goo.gl/n627J1&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;Train&lt;/td&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;Hey Soul Sister&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;8&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;http://goo.gl/74D1Up&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;h1 id=&quot;future-work-random-images&quot;&gt;Future Work: Random Images&lt;/h1&gt;
+&lt;p&gt;Another application of Markov Chains is in image reconstruction. By using the probability distribution of the colors of different pixels, it is possible to reconstruct images while maintaining its original artistic style.&lt;/p&gt;
+
+&lt;p&gt;Cover photograph from &lt;a href=&quot;http://blog.funeralone.com/funeralone-products/life-tributes/funeral-songs/&quot;&gt;Funer Alone&lt;/a&gt;&lt;/p&gt;
+</description>
+        <pubDate>Thu, 20 Nov 2014 03:20:00 -0800</pubDate>
+        <link>http://ashwin153.github.io/2014/11/20/music/</link>
+        <guid isPermaLink="true">http://ashwin153.github.io/2014/11/20/music/</guid>
         
         
       </item>
