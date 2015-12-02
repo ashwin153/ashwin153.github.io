@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="The work and thoughts of a programmer">
+
+    <title>VIX Futures Roll - Ashwin Madavan</title>
+
+    <link rel="canonical" href="http://ashwin153.github.io/2015/10/19/vix/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/clean-blog.css">
+
+    <!-- Pygments Github CSS -->
+    <link rel="stylesheet" href="/css/syntax.css">
+
+    <!-- Custom Fonts -->
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href='//fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+
+
+<body>
+
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Ashwin Madavan</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <a href="/">Home</a>
+                </li>
+                
+                <li>
+                    <a href="/about/">About</a>
+                </li>
+                
+                <li>
+                    <a href="/contact/">Contact</a>
+                </li>
+                
+            </ul>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+
+
+    <!-- Post Header -->
+<header class="intro-header" style="background-image: url('/img/vix-bg.jpg')">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <h1>VIX Futures Roll</h1>
+                    
+                    <h2 class="subheading">Trading volatility futures</h2>
+                    
+                    <span class="meta">Posted by Ashwin Madavan on October 19, 2015</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+
+				<h1 id="introduction">Introduction</h1>
+<p>A future is a contract between two parties, in which the parties agree to buy and sell an underlying asset at a specified price at a specified time in the future. For example, consider an upstream oil company. The upstream oil company benefits from higher oil prices, because higher prices allow the company to sell extracted oil for more profit. If the company believes oil prices will fall in the future, the company would <em>sell</em> futures contracts to protect against lower future prices. Similarly, a downstream oil company might <em>buy</em> futures contracts to protect against rising oil prices.</p>
+
+<p>One of the most fundamental principles of futures is that futures prices will always converge to spot price (price of the underlying) as the futures contracts near expiration to eliminate arbitrage opportunities. If the futures price was greater than the spot price at expiration, a smart trader could sell futures contracts and long the underlying asset and profit off the difference. If the futures price was less than the spot price at expiration, a smart trader could buy futures contracts and short the underlying asset and profit off the difference.</p>
+
+<p>The price of volatility futures (VIX) is derived from out-of-the-money (OTM) call and put SPX options and represents the market’s expectation of implied volatility over a 30-day period. Unlike most other futures, it is impossible to buy spot VIX (you cannot buy implied volatility). Therefore, VIX futures have no storage costs and are cash settled.</p>
+
+<h1 id="strategy">Strategy</h1>
+<p>My trading strategy makes two predictions about how VIX futures will behave. First, VIX futures will move in the direction of the subsequent VIX future (Jan ‘15 will move toward Feb ‘15, Dec ‘15 will move toward Jan ‘16, etc.). Second, the larger the difference in price between a VIX future and the subsequent VIX future, the more the future will move (it Jan ‘15 = 15, Feb ‘15 = 20, and Mar ‘15 = 22; then we can expect Jan ‘15 to move more than Feb ‘15).</p>
+
+<p>To prove these hypotheses, I found the correlation between the differences in prices of adjacent futures and the next day price changes. The resulting correlation coefficient of r = 0.934 shows a high degree of correlation and signifies that our hypotheses are correct.</p>
+
+<p>My first attempt at the strategy was the long the future with the most positive price difference. When reinvesting returns, this resulting in the following cumulative returns curve.
+<img align="center" style="margin: 0 auto; display: block;" src="/img/vix-a1.png" /></p>
+
+<p>My next attempt at the strategy was to short the future with the most negative price difference. This attempt worked significantly better than the previous attempt, producing positive returns and a Sharpe ratio of 1.28 since 3/21/12. The graph below shows the cumulative returns of this attempt.
+<img align="center" style="margin: 0 auto; display: block;" src="/img/vix-a2.png" /></p>
+
+<p>This got me thinking. Why was the returns so good in the second attempt and so poor in the first attempt? Weren’tboth attempts implementing the same strategy? After stareing at both curves for a while, I discovered that the first strategy works best during periods of backwardation and the second strategy works best during periods of contango. Backwardation occurs when the futures term structure is below the spot price and contango occurs when the futures curve is above the spot price. The line in blue represents the spot price of VIX and the line in red represents the average of all VIX futures contracts. The period of backwardation beginning October 2008 and December 2008 lines up perfectly with the spike in returns in attempt #1 over the same period. The period of contango beginning October 2011 and ending October 2014 also lines up perfectly with the spike in returns in attempt #2 over the same period. 
+<img align="center" style="margin: 0 auto; display: block;" src="/img/vix-a3.png" /></p>
+
+<p>My final attempt at the strategy was a hybrid approach; long the future with the most positive price difference during periods of backwardation, and short the future with the most negative price difference during periods of contango. This strategy performed by far the best, with a Sharpe ratio of 1.67 since 3/21/12. The graph belows shows the cumulative returns of this attempt.
+<img align="center" style="margin: 0 auto; display: block;" src="/img/vix-a4.png" /></p>
+
+<h1 id="future-work">Future Work</h1>
+<p>When professional traders analyze futures, they typically use a three-dimensional model: price, volume, and open interest. Volume represents the total number of contracts that changed hands and open interest represents the total number of outstanding contracts. When volume rises and open interest rises, it is thought of as confirming a trend in price. When volume rises and open interest falls, it is a sign to liquidate your position. When volume falls and open interest rises, it signifies a period of accumulation. When volume falls and open interest falls, it signifies a period of congestion. By including these variables in my model, I am confident that I could improve the returns of my strategy.</p>
+
+<p>Cover photograph by <a href="http://www.stockideas.org/wp-content/uploads/2014/01/stocks-ranked-by-volatility.jpg">stockideas.org</a>.</p>
+
+
+                <hr>
+
+                <ul class="pager">
+                    
+                    <li class="previous">
+                        <a href="/2015/05/16/stocks/" data-toggle="tooltip" data-placement="top" title="Automated DCF Analysis">&larr; Previous Post</a>
+                    </li>
+                    
+                    
+                    <li class="next">
+                        <a href="/2015/11/19/compress/" data-toggle="tooltip" data-placement="top" title="Compression">Next Post &rarr;</a>
+                    </li>
+                    
+                </ul>
+
+            </div>
+        </div>
+    </div>
+</article>
+
+<hr>
+
+
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                    <li>
+                        <a href="/feed.xml">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-rss fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                    
+                    
+                    <li>
+                        <a href="https://www.facebook.com/ashwin.madavan">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-facebook fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                    
+                    
+                    <li>
+                        <a href="https://github.com/ashwin153">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                    
+                </ul>
+                <p class="copyright text-muted">Copyright &copy; Ashwin Madavan 2015</p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js "></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js "></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/clean-blog.min.js "></script>
+
+
+</body>
+
+</html>

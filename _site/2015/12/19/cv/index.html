@@ -8,9 +8,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="The work and thoughts of a programmer">
 
-    <title>Music Generation Using Markov Chains - Ashwin Madavan</title>
+    <title>CS 378: Computer Vision - Ashwin Madavan</title>
 
-    <link rel="canonical" href="http://ashwin153.github.io/2014/11/20/music/">
+    <link rel="canonical" href="http://ashwin153.github.io/2015/12/19/cv/">
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="/css/bootstrap.min.css">
@@ -76,14 +76,16 @@
 
 
     <!-- Post Header -->
-<header class="intro-header" style="background-image: url('/img/music-bg.jpg')">
+<header class="intro-header" style="background-image: url('/img/cv-bg.jpg')">
     <div class="container">
         <div class="row">
             <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
                 <div class="post-heading">
-                    <h1>Music Generation Using Markov Chains</h1>
+                    <h1>CS 378: Computer Vision</h1>
                     
-                    <span class="meta">Posted by Ashwin Madavan on November 20, 2014</span>
+                    <h2 class="subheading">An introduction to vision and learning techniques</h2>
+                    
+                    <span class="meta">Posted by Ashwin Madavan on December 19, 2015</span>
                 </div>
             </div>
         </div>
@@ -96,73 +98,27 @@
         <div class="row">
             <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
 
-				<p>Markov chains are “random processes that undergo transitions from one state to another on a given state space.” (Wikipedia). Markov chains must be “memoryless”; in other words, the probability distribution of their next state only depends on their current state and not on the states that preceded it. I developed a Java implementation of a Markov Chain using a hash map that associates an event (prefix) with a list of possible outcomes (suffixes).</p>
+				<h1 id="project-1-seam-carving">Project 1: Seam Carving</h1>
 
-<p>The full code and documentation is available on <a href="https://github.com/ashwin153/cs-314h/tree/master/assignments/prog2">Github</a>.</p>
+<h1 id="project-2-clustering-and-hough-transforms">Project 2: Clustering and Hough Transforms</h1>
 
-<h1 id="random-writing">Random Writing</h1>
-<p>In the case of text, events are represented as character strings of length k. Each occurence of every character string of length k is mapped to the character string of length k that immediately follows it (note that the first k-1 characters of the prefix and suffix are the same; the only difference is the last character). This process continues until the program consumes the entire input file. The program then randomly selects one of the prefix events in the mapping. It randomly selects one of the associated “suffix” events (suffix events that appear more often after a prefix have a greater probability of being selected), outputs the unique kth character, and sets the new seed as the suffix event. It then repeats this process until an output of character string of suitable size has been created.</p>
+<h1 id="project-3-image-mosaics">Project 3: Image Mosaics</h1>
 
-<h1 id="random-music">Random Music</h1>
-<p>I adapted my text-based implementation of Markov Chains to handle musical MIDI files as well. MIDI files contain information about each note played by each instrument in a musical piece. In the case of music, events are represented as all the notes played by all the instruments over k timesteps (length of timestep varies from song to song). The program consumes the input file and uses it to generate a completely new song. This new song will share many of the same chord progressions and note patterns, but it is randomized and original. One of the most challenging aspects of this project was ensuring that the music stayed on beat. To do this, I added small (almost) inaudible silences between notes that shift the beat over slightly to ensure that the song stays in meter.</p>
+<h1 id="project-4-object-detection">Project 4: Object Detection</h1>
 
-<table>
-  <thead>
-    <tr>
-      <th style="text-align: left">Artist</th>
-      <th style="text-align: left">Song</th>
-      <th style="text-align: center">k</th>
-      <th style="text-align: center">Link</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td style="text-align: left">Skrillex</td>
-      <td style="text-align: left">Scary Monsters</td>
-      <td style="text-align: center">1</td>
-      <td style="text-align: center">http://goo.gl/8B8fHu</td>
-    </tr>
-    <tr>
-      <td style="text-align: left">Skrillex</td>
-      <td style="text-align: left">Scary Monsters</td>
-      <td style="text-align: center">4</td>
-      <td style="text-align: center">http://goo.gl/TrIy5m</td>
-    </tr>
-    <tr>
-      <td style="text-align: left">Skrillex</td>
-      <td style="text-align: left">Scary Monsters</td>
-      <td style="text-align: center">8</td>
-      <td style="text-align: center">http://goo.gl/GpYXAf</td>
-    </tr>
-    <tr>
-      <td style="text-align: left">Led Zeppelin</td>
-      <td style="text-align: left">Stairway to Heaven</td>
-      <td style="text-align: center">8</td>
-      <td style="text-align: center">http://goo.gl/n627J1</td>
-    </tr>
-    <tr>
-      <td style="text-align: left">Train</td>
-      <td style="text-align: left">Hey Soul Sister</td>
-      <td style="text-align: center">8</td>
-      <td style="text-align: center">http://goo.gl/74D1Up</td>
-    </tr>
-  </tbody>
-</table>
+<h1 id="project-5-face-detection">Project 5: Face Detection</h1>
 
-<h1 id="future-work-random-images">Future Work: Random Images</h1>
-<p>Another application of Markov Chains is in image reconstruction. By using the probability distribution of the colors of different pixels, it is possible to reconstruct images while maintaining its original artistic style.</p>
-
-<p>Cover photograph from <a href="http://blog.funeralone.com/funeralone-products/life-tributes/funeral-songs/">Funer Alone</a></p>
+<p>Cover photograph by <a href="http://wallpaperswide.com/clear_vision-wallpapers.html">wallpaperswide.com</a>.</p>
 
 
                 <hr>
 
                 <ul class="pager">
                     
-                    
-                    <li class="next">
-                        <a href="/2015/04/19/pacman/" data-toggle="tooltip" data-placement="top" title="PacMan: Recreating the Arcade Classic">Next Post &rarr;</a>
+                    <li class="previous">
+                        <a href="/2015/12/11/os/" data-toggle="tooltip" data-placement="top" title="CS 439H: Operating Systems">&larr; Previous Post</a>
                     </li>
+                    
                     
                 </ul>
 

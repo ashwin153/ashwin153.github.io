@@ -8,9 +8,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="The work and thoughts of a programmer">
 
-    <title>Ashwin Madavan</title>
+    <title>Compression - Ashwin Madavan</title>
 
-    <link rel="canonical" href="http://ashwin153.github.io/">
+    <link rel="canonical" href="http://ashwin153.github.io/2015/11/19/compress/">
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="/css/bootstrap.min.css">
@@ -75,112 +75,75 @@
 </nav>
 
 
-    <!-- Page Header -->
-<header class="intro-header" style="background-image: url('/img/home-bg.jpg')">
+    <!-- Post Header -->
+<header class="intro-header" style="background-image: url('/img/compress-bg.png')">
     <div class="container">
         <div class="row">
             <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-                <div class="site-heading">
-                    <h1>Ashwin Madavan</h1>
-                    <hr class="small">
-                    <span class="subheading">My corner of the internet</span>
+                <div class="post-heading">
+                    <h1>Compression</h1>
+                    
+                    <h2 class="subheading">Bigger isn't always better</h2>
+                    
+                    <span class="meta">Posted by Ashwin Madavan on November 19, 2015</span>
                 </div>
             </div>
         </div>
     </div>
 </header>
 
-<!-- Main Content -->
-<div class="container">
-	<div class="row">
-		<div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-			
-<div class="post-preview">
-    <a href="/2015/12/19/cv/">
-        <h2 class="post-title">            CS 378: Computer Vision
-        </h2>
-        
-        <h3 class="post-subtitle">
-            An introduction to vision and learning techniques
-        </h3>
-        
-    </a>
-    <p class="post-meta">Posted by Ashwin Madavan on December 19, 2015</p>
-</div>
-<hr>
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
 
-<div class="post-preview">
-    <a href="/2015/12/11/os/">
-        <h2 class="post-title">            CS 439H: Operating Systems
-        </h2>
-        
-        <h3 class="post-subtitle">
-            Abstraction, resource management, and frustration
-        </h3>
-        
-    </a>
-    <p class="post-meta">Posted by Ashwin Madavan on December 11, 2015</p>
-</div>
-<hr>
+				<h1 id="introduction">Introduction</h1>
+<p>Compression is a two step process: modeling and coding. Coding is how you represent the bits (Huffman Coding, Range Encoding, Arithmetic Coding, Asymmetric Binary Coding), modeling is what the bits represent. Coding is a solved problem, but modeling is not. There is no such thing as universal compression; in other words, there is no algorithm that is guaranteed to reduce the size of a file. However, there is no lower bound on how much a good model can compress data. For example, if the data in your file was 3.141592653 then you could model the all the data as just pi. <em>My compression algorithm uses curve fitting to model the bytes in a file as a function of their position in the file.</em></p>
 
-<div class="post-preview">
-    <a href="/2015/11/19/compress/">
-        <h2 class="post-title">            Compression
-        </h2>
-        
-        <h3 class="post-subtitle">
-            Bigger isn't always better
-        </h3>
-        
-    </a>
-    <p class="post-meta">Posted by Ashwin Madavan on November 19, 2015</p>
-</div>
-<hr>
+<h1 id="expression">Expression</h1>
+<p>Expressions are one-dimensional functions that can be evaluated at various values in a thread-safe manner. There are two kinds of expressions: <em>stack expresssions</em> and <em>tree expressions</em>. Stack expressions and tree expression are both compositions simpler operations like addition and sine; however, stack expressions store these operations in reverse polish notation (postfix) and tree expressions store these operations in a parse tree. Tree based evaluation makes it simpler to manipulate the tree and allows evaluation to be easily parallelized. However, stack based evaluation is much simpler to implement and should be faster on a single-core machine because it avoids the overhead of recursive function calls. Tree and stack expressions are interoperable and are equivalent ways of representing the same information.</p>
 
-<div class="post-preview">
-    <a href="/2015/10/19/vix/">
-        <h2 class="post-title">            VIX Futures Roll
-        </h2>
-        
-        <h3 class="post-subtitle">
-            Trading volatility futures
-        </h3>
-        
-    </a>
-    <p class="post-meta">Posted by Ashwin Madavan on October 19, 2015</p>
-</div>
-<hr>
+<h2 id="benchmarks">Benchmarks</h2>
 
-<div class="post-preview">
-    <a href="/2015/05/16/stocks/">
-        <h2 class="post-title">            Automated DCF Analysis
-        </h2>
-        
-        <h3 class="post-subtitle">
-            Predicting future cash flows
-        </h3>
-        
-    </a>
-    <p class="post-meta">Posted by Ashwin Madavan on May 16, 2015</p>
-</div>
-<hr>
+<h1 id="curve-fitting">Curve Fitting</h1>
+<p>## Least Squares Regression
+## Discrete Fourier Regression
+## Genetic Regression</p>
+
+<h1 id="mitigating-error">Mitigating Error</h1>
+<p>## Modified Chunking Algorithm
+## Genetic Bit Weight Optimizer</p>
+
+<h1 id="encoding-and-decoding">Encoding and Decoding</h1>
+<p>## Java Serialization
+## Kryo Serialization
+## Custom Serialization</p>
+
+<h1 id="results">Results</h1>
+
+<p>Cover photograph by <a href="http://www.data.gov.bc.ca/local/dbc/images/feature/img_bg_slider2.png">data.gov.bc.ca</a>.</p>
 
 
-<!-- Pager -->
+                <hr>
 
-<ul class="pager">
-    
-    
-    <li class="next">
-        <a href="/page2">Older Posts &rarr;</a>
-    </li>
-    
-</ul>
+                <ul class="pager">
+                    
+                    <li class="previous">
+                        <a href="/2015/10/19/vix/" data-toggle="tooltip" data-placement="top" title="VIX Futures Roll">&larr; Previous Post</a>
+                    </li>
+                    
+                    
+                    <li class="next">
+                        <a href="/2015/12/11/os/" data-toggle="tooltip" data-placement="top" title="CS 439H: Operating Systems">Next Post &rarr;</a>
+                    </li>
+                    
+                </ul>
 
-
-		</div>
-	</div>
-</div>
+            </div>
+        </div>
+    </div>
+</article>
 
 <hr>
 
