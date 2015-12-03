@@ -5,8 +5,8 @@
     <description>The work and thoughts of a programmer</description>
     <link>http://ashwin153.github.io/</link>
     <atom:link href="http://ashwin153.github.io/feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Wed, 02 Dec 2015 23:17:23 -0600</pubDate>
-    <lastBuildDate>Wed, 02 Dec 2015 23:17:23 -0600</lastBuildDate>
+    <pubDate>Wed, 02 Dec 2015 23:18:33 -0600</pubDate>
+    <lastBuildDate>Wed, 02 Dec 2015 23:18:33 -0600</lastBuildDate>
     <generator>Jekyll v2.5.3</generator>
     
       <item>
@@ -582,7 +582,7 @@
 &lt;p&gt;Another benefit of tree expressions is that they can be easily manipulated and modified by simply changing nodes in the tree. The drawbacks with tree expressions include larger memory usage.&lt;/p&gt;
 
 &lt;h3 id=&quot;verifying-thread-safety&quot;&gt;Verifying Thread Safety&lt;/h3&gt;
-&lt;p&gt;One of my biggest challenges was verifying that my implementation was thread-safe. The problem with testing for race conditions is that failures are non-deterministic. To eliminate the non-determinism I used a library called &lt;a href=&quot;http://www.cs.umd.edu/~ayewah/projects/multithreadedtc/introduction.html&quot;&gt;MultithreadedTC&lt;/a&gt; which “features a metronome that is used to provide fine control over the sequence of activities in multiple threads; in other words, MultithreadedTC is able to detect race conditions in a deterministic manner.&lt;/p&gt;
+&lt;p&gt;One of my biggest challenges was verifying that my implementation was thread-safe. The problem with testing for race conditions is that failures are non-deterministic. To eliminate the non-determinism I used a library called &lt;a href=&quot;http://www.cs.umd.edu/~ayewah/projects/multithreadedtc/introduction.html&quot;&gt;MultithreadedTC&lt;/a&gt; which “features a metronome that is used to provide fine control over the sequence of activities in multiple threads”; in other words, MultithreadedTC is able to detect race conditions in a deterministic manner.&lt;/p&gt;
 
 &lt;h3 id=&quot;benchmarks&quot;&gt;Benchmarks&lt;/h3&gt;
 

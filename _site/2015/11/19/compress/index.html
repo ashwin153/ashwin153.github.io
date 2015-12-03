@@ -153,7 +153,7 @@
 <p>Another benefit of tree expressions is that they can be easily manipulated and modified by simply changing nodes in the tree. The drawbacks with tree expressions include larger memory usage.</p>
 
 <h3 id="verifying-thread-safety">Verifying Thread Safety</h3>
-<p>One of my biggest challenges was verifying that my implementation was thread-safe. The problem with testing for race conditions is that failures are non-deterministic. To eliminate the non-determinism I used a library called <a href="http://www.cs.umd.edu/~ayewah/projects/multithreadedtc/introduction.html">MultithreadedTC</a> which “features a metronome that is used to provide fine control over the sequence of activities in multiple threads; in other words, MultithreadedTC is able to detect race conditions in a deterministic manner.</p>
+<p>One of my biggest challenges was verifying that my implementation was thread-safe. The problem with testing for race conditions is that failures are non-deterministic. To eliminate the non-determinism I used a library called <a href="http://www.cs.umd.edu/~ayewah/projects/multithreadedtc/introduction.html">MultithreadedTC</a> which “features a metronome that is used to provide fine control over the sequence of activities in multiple threads”; in other words, MultithreadedTC is able to detect race conditions in a deterministic manner.</p>
 
 <h3 id="benchmarks">Benchmarks</h3>
 
