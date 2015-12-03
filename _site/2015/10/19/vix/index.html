@@ -148,12 +148,37 @@
 <h1 id="future-work">Future Work</h1>
 <p>When professional traders analyze futures, they typically use a three-dimensional model: price, volume, and open interest. Volume represents the total number of contracts that changed hands and open interest represents the total number of outstanding contracts. Changes in volume and open interest are important indicators of futures market behavior:</p>
 
-<ul>
-  <li>Volume <em>rises</em>, open interest <em>rises</em>: Confirming a trend in price</li>
-  <li>Volume <em>rises</em>, open interest <em>falls</em>: Liquidate position</li>
-  <li>Volume <em>falls</em>, open interest <em>falls</em>: Period of congestion (people selling, but not buying)</li>
-  <li>Volume <em>falls</em>, open interest <em>falls</em>: Period of accumulation (people buying, but not selling)</li>
-</ul>
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center">Volume</th>
+      <th style="text-align: center">Open Interest</th>
+      <th style="text-align: left">Effect</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center">rises</td>
+      <td style="text-align: center">rises</td>
+      <td style="text-align: left">Confirms a trend in price</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">rises</td>
+      <td style="text-align: center">falls</td>
+      <td style="text-align: left">Liquidate position</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">falls</td>
+      <td style="text-align: center">rises</td>
+      <td style="text-align: left">Period of congestion; selling, but not buying</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">falls</td>
+      <td style="text-align: center">falls</td>
+      <td style="text-align: left">Period of accumulation; buying, but not selling</td>
+    </tr>
+  </tbody>
+</table>
 
 <p>Another important factor to consider when trading futures is time to expiration. A futures contract closer to expiration is likely to converge faster to the market price than a futures contract farther from expiration.</p>
 
