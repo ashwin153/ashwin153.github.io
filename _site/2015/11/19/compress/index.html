@@ -152,52 +152,8 @@
 
 <p>Another benefit of tree expressions is that they can be easily manipulated and modified by simply changing nodes in the tree. The drawbacks with tree expressions include larger memory usage.</p>
 
-<h3 id="testing">Testing</h3>
-<p>One of my biggest challenges was verifying that my implementation was thread-safe. The problem with testing for race conditions is that failures are non-deterministic. To eliminate the non-determinism I used a library called <a href="http://www.cs.umd.edu/~ayewah/projects/multithreadedtc/introduction.html">MultithreadedTC</a> which “features a metronome that is used to provide fine control over the sequence of activities in multiple threads. The test case below utilizes MultithreadedTC to detect race conditions in a deterministic manner.</p>
-
-<div class="highlight"><pre><code class="language-java" data-lang="java"><span class="lineno"> 1</span> <span class="nd">@Test</span>
-<span class="lineno"> 2</span> <span class="kd">public</span> <span class="kt">void</span> <span class="nf">testEval</span><span class="o">()</span> <span class="kd">throws</span> <span class="n">Throwable</span> <span class="o">{</span>
-<span class="lineno"> 3</span> 	<span class="n">TestFramework</span><span class="o">.</span><span class="na">runManyTimes</span><span class="o">(</span><span class="k">new</span> <span class="nf">MultithreadedExpressionTest</span><span class="o">(),</span> <span class="mi">5</span><span class="o">);</span>
-<span class="lineno"> 4</span> <span class="o">}</span>
-<span class="lineno"> 5</span> 
-<span class="lineno"> 6</span> <span class="nd">@SuppressWarnings</span><span class="o">({</span><span class="s">&quot;deprecation&quot;</span><span class="o">,</span> <span class="s">&quot;unused&quot;</span><span class="o">})</span>
-<span class="lineno"> 7</span> <span class="kd">private</span> <span class="kd">class</span> <span class="nc">MultithreadedExpressionTest</span> <span class="kd">extends</span> <span class="n">MultithreadedTestCase</span> <span class="o">{</span>
-<span class="lineno"> 8</span> 	
-<span class="lineno"> 9</span> 	<span class="kd">private</span> <span class="n">Expression</span> <span class="n">_e1</span><span class="o">,</span> <span class="n">_e2</span><span class="o">;</span>
-<span class="lineno">10</span> 	
-<span class="lineno">11</span> 	<span class="nd">@Override</span>
-<span class="lineno">12</span> 	<span class="kd">public</span> <span class="kt">void</span> <span class="nf">initialize</span><span class="o">()</span> <span class="o">{</span>
-<span class="lineno">13</span> 		<span class="n">Variable</span> <span class="n">x</span> <span class="o">=</span> <span class="k">new</span> <span class="nf">Variable</span><span class="o">(</span><span class="sc">&#39;x&#39;</span><span class="o">);</span>
-<span class="lineno">14</span> 		<span class="n">_e1</span> <span class="o">=</span> <span class="k">new</span> <span class="nf">StackExpression</span><span class="o">(</span><span class="n">x</span><span class="o">,</span> <span class="n">Arrays</span><span class="o">.</span><span class="na">asList</span><span class="o">((</span><span class="n">Operation</span><span class="o">)</span> <span class="n">x</span><span class="o">));</span>
-<span class="lineno">15</span> 		<span class="n">_e2</span> <span class="o">=</span> <span class="k">new</span> <span class="nf">TreeExpression</span><span class="o">(</span><span class="k">new</span> <span class="nf">StackExpression</span><span class="o">(</span><span class="n">x</span><span class="o">,</span> <span class="n">Arrays</span><span class="o">.</span><span class="na">asList</span><span class="o">((</span><span class="n">Operation</span><span class="o">)</span> <span class="n">x</span><span class="o">)));</span>
-<span class="lineno">16</span> 	<span class="o">}</span>
-<span class="lineno">17</span> 	
-<span class="lineno">18</span> 	<span class="kd">public</span> <span class="kt">void</span> <span class="nf">thread1</span><span class="o">()</span> <span class="kd">throws</span> <span class="n">Exception</span> <span class="o">{</span>
-<span class="lineno">19</span> 		<span class="n">assertEquals</span><span class="o">(</span><span class="n">BigDecimal</span><span class="o">.</span><span class="na">valueOf</span><span class="o">(+</span><span class="mi">1</span><span class="o">),</span> <span class="n">_e1</span><span class="o">.</span><span class="na">eval</span><span class="o">(</span><span class="n">BigDecimal</span><span class="o">.</span><span class="na">valueOf</span><span class="o">(+</span><span class="mi">1</span><span class="o">)));</span>
-<span class="lineno">20</span> 	<span class="o">}</span>
-<span class="lineno">21</span> 	
-<span class="lineno">22</span> 	<span class="kd">public</span> <span class="kt">void</span> <span class="nf">thread2</span><span class="o">()</span> <span class="kd">throws</span> <span class="n">Exception</span> <span class="o">{</span>
-<span class="lineno">23</span> 		<span class="n">assertEquals</span><span class="o">(</span><span class="n">BigDecimal</span><span class="o">.</span><span class="na">valueOf</span><span class="o">(+</span><span class="mi">2</span><span class="o">),</span> <span class="n">_e2</span><span class="o">.</span><span class="na">eval</span><span class="o">(</span><span class="n">BigDecimal</span><span class="o">.</span><span class="na">valueOf</span><span class="o">(+</span><span class="mi">2</span><span class="o">)));</span>
-<span class="lineno">24</span> 	<span class="o">}</span>
-<span class="lineno">25</span> 	
-<span class="lineno">26</span> 	<span class="kd">public</span> <span class="kt">void</span> <span class="nf">thread3</span><span class="o">()</span> <span class="kd">throws</span> <span class="n">Exception</span> <span class="o">{</span>
-<span class="lineno">27</span> 		<span class="n">assertEquals</span><span class="o">(</span><span class="n">BigDecimal</span><span class="o">.</span><span class="na">valueOf</span><span class="o">(+</span><span class="mi">3</span><span class="o">),</span> <span class="n">_e1</span><span class="o">.</span><span class="na">eval</span><span class="o">(</span><span class="n">BigDecimal</span><span class="o">.</span><span class="na">valueOf</span><span class="o">(+</span><span class="mi">3</span><span class="o">)));</span>
-<span class="lineno">28</span> 	<span class="o">}</span>
-<span class="lineno">29</span> 	
-<span class="lineno">30</span> 	<span class="kd">public</span> <span class="kt">void</span> <span class="nf">thread4</span><span class="o">()</span> <span class="kd">throws</span> <span class="n">Exception</span> <span class="o">{</span>
-<span class="lineno">31</span> 		<span class="n">assertEquals</span><span class="o">(</span><span class="n">BigDecimal</span><span class="o">.</span><span class="na">valueOf</span><span class="o">(+</span><span class="mi">4</span><span class="o">),</span> <span class="n">_e2</span><span class="o">.</span><span class="na">eval</span><span class="o">(</span><span class="n">BigDecimal</span><span class="o">.</span><span class="na">valueOf</span><span class="o">(+</span><span class="mi">4</span><span class="o">)));</span>
-<span class="lineno">32</span> 	<span class="o">}</span>
-<span class="lineno">33</span> 	
-<span class="lineno">34</span> 	<span class="kd">public</span> <span class="kt">void</span> <span class="nf">thread5</span><span class="o">()</span> <span class="kd">throws</span> <span class="n">Exception</span> <span class="o">{</span>
-<span class="lineno">35</span> 		<span class="kt">int</span><span class="o">[]</span> <span class="n">chunks</span> <span class="o">=</span> <span class="k">new</span> <span class="kt">int</span><span class="o">[]</span> <span class="o">{</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">1</span><span class="o">,</span> <span class="mi">2</span><span class="o">,</span> <span class="mi">3</span> <span class="o">};</span>
-<span class="lineno">36</span> 		<span class="n">assertArrayEquals</span><span class="o">(</span><span class="n">chunks</span><span class="o">,</span> <span class="n">_e1</span><span class="o">.</span><span class="na">eval</span><span class="o">(</span><span class="mi">0</span><span class="o">,</span> <span class="n">chunks</span><span class="o">.</span><span class="na">length</span><span class="o">,</span> <span class="mi">1</span><span class="o">));</span>
-<span class="lineno">37</span> 	<span class="o">}</span>
-<span class="lineno">38</span> 	
-<span class="lineno">39</span> 	<span class="kd">public</span> <span class="kt">void</span> <span class="nf">thread6</span><span class="o">()</span> <span class="kd">throws</span> <span class="n">Exception</span> <span class="o">{</span>
-<span class="lineno">40</span> 		<span class="n">BigDecimal</span><span class="o">[]</span> <span class="n">chunks</span> <span class="o">=</span> <span class="k">new</span> <span class="n">BigDecimal</span><span class="o">[]</span> <span class="o">{</span> <span class="n">BigDecimal</span><span class="o">.</span><span class="na">ZERO</span><span class="o">,</span> <span class="n">BigDecimal</span><span class="o">.</span><span class="na">ONE</span> <span class="o">};</span>
-<span class="lineno">41</span> 		<span class="n">assertArrayEquals</span><span class="o">(</span><span class="n">chunks</span><span class="o">,</span> <span class="n">_e1</span><span class="o">.</span><span class="na">eval</span><span class="o">(</span><span class="n">BigDecimal</span><span class="o">.</span><span class="na">ZERO</span><span class="o">,</span> <span class="n">BigDecimal</span><span class="o">.</span><span class="na">valueOf</span><span class="o">(</span><span class="mi">2</span><span class="o">),</span> <span class="n">BigDecimal</span><span class="o">.</span><span class="na">ONE</span><span class="o">));</span>
-<span class="lineno">42</span> 	<span class="o">}</span>
-<span class="lineno">43</span> <span class="o">}</span></code></pre></div>
+<h3 id="verifying-thread-safety">Verifying Thread Safety</h3>
+<p>One of my biggest challenges was verifying that my implementation was thread-safe. The problem with testing for race conditions is that failures are non-deterministic. To eliminate the non-determinism I used a library called <a href="http://www.cs.umd.edu/~ayewah/projects/multithreadedtc/introduction.html">MultithreadedTC</a> which “features a metronome that is used to provide fine control over the sequence of activities in multiple threads; in other words, MultithreadedTC is able to detect race conditions in a deterministic manner.</p>
 
 <h3 id="benchmarks">Benchmarks</h3>
 
