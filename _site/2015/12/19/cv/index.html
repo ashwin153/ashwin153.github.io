@@ -102,8 +102,8 @@
 
 <h3 id="color-quantization-using-k-means">Color Quantization Using K-Means</h3>
 <div>
-<img align="center" style="float: left;  width: 45%;" src="/img/cv-d1.png" />
-<img align="center" style="float: right; width: 45%;" src="/img/cv-d2.png" />
+<img align="center" style="float: left;  width: 49%;" src="/img/cv-d1.png" />
+<img align="center" style="float: right; width: 49%;" src="/img/cv-d2.png" />
 <div style="clear: both;" />
 </div>
 
@@ -113,8 +113,8 @@
 
 <h4 id="visualizing-the-hough-space">Visualizing the Hough Space</h4>
 <div>
-<img align="center" style="float: left;  width: 45%;" src="/img/cv-d7.png" />
-<img align="center" style="float: right; width: 45%" src="/img/cv-d8.png" />
+<img align="center" style="float: left;  width: 49%;" src="/img/cv-d7.png" />
+<img align="center" style="float: right; width: 49%" src="/img/cv-d8.png" />
 <div style="clear: both;" />
 </div>
 
@@ -128,18 +128,88 @@
 <h4 id="detecting-circles-of-arbitrary-radius">Detecting Circles of Arbitrary Radius</h4>
 <p><img align="center" style="margin: 0 auto; display: block;" src="/img/cv-d9.png" /></p>
 
+<div class="highlight"><pre><code class="language-matlab" data-lang="matlab"><span class="lineno"> 1</span> <span class="k">function</span><span class="w"> </span>[circles] <span class="p">=</span><span class="w"> </span><span class="nf">detect_arbitrary_circles</span><span class="p">(</span>im<span class="p">)</span><span class="w"></span>
+<span class="lineno"> 2</span> <span class="c">%DETECT_ARBITRARY_CIRCLES locate circles of arbitrary radius in the image</span>
+<span class="lineno"> 3</span> <span class="c">%   circles = detectArbitraryCircles(im); circles is [cx, cy, radius]</span>
+<span class="lineno"> 4</span> 
+<span class="lineno"> 5</span>     <span class="c">% Calculate the edge image; extract all the indicies of edges </span>
+<span class="lineno"> 6</span>     <span class="n">binary</span> <span class="p">=</span> <span class="n">edge</span><span class="p">(</span><span class="n">rgb2gray</span><span class="p">(</span><span class="n">im</span><span class="p">),</span> <span class="s">&#39;canny&#39;</span><span class="p">);</span>
+<span class="lineno"> 7</span>     <span class="p">[</span><span class="n">y</span><span class="p">,</span> <span class="n">x</span><span class="p">]</span> <span class="p">=</span> <span class="nb">find</span><span class="p">(</span><span class="n">binary</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">);</span> 
+<span class="lineno"> 8</span>     <span class="p">[</span><span class="o">~</span><span class="p">,</span> <span class="n">Gdir</span><span class="p">]</span> <span class="p">=</span> <span class="n">imgradient</span><span class="p">(</span><span class="n">binary</span><span class="p">);</span>
+<span class="lineno"> 9</span> 
+<span class="lineno">10</span>     <span class="c">% Our hough space is a 3-D space in which each element represents the </span>
+<span class="lineno">11</span>     <span class="c">% number of votes for a circle of center (x, y) and some radius</span>
+<span class="lineno">12</span>     <span class="n">height</span> <span class="p">=</span> <span class="nb">size</span><span class="p">(</span><span class="n">binary</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span> 
+<span class="lineno">13</span>     <span class="n">width</span>  <span class="p">=</span> <span class="nb">size</span><span class="p">(</span><span class="n">binary</span><span class="p">,</span> <span class="mi">2</span><span class="p">);</span> 
+<span class="lineno">14</span>     <span class="n">hough</span> <span class="p">=</span> <span class="nb">zeros</span><span class="p">(</span><span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">,</span> <span class="n">uint32</span><span class="p">(</span><span class="n">min</span><span class="p">(</span><span class="n">height</span><span class="p">,</span> <span class="n">width</span><span class="p">)</span> <span class="o">./</span> <span class="mi">2</span><span class="p">));</span>
+<span class="lineno">15</span>          
+<span class="lineno">16</span>     <span class="c">% For each edge point and for each possible radius, vote on centers</span>
+<span class="lineno">17</span>     <span class="k">for</span> <span class="nb">i</span> <span class="p">=</span> <span class="mi">1</span><span class="p">:</span><span class="nb">length</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<span class="lineno">18</span>         <span class="k">for</span> <span class="n">radius</span> <span class="p">=</span> <span class="mi">1</span><span class="p">:</span><span class="nb">size</span><span class="p">(</span><span class="n">hough</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+<span class="lineno">19</span>             <span class="c">% Use the image gradient to reduce the number of votes</span>
+<span class="lineno">20</span>             <span class="n">grad</span> <span class="p">=</span> <span class="n">Gdir</span><span class="p">(</span><span class="n">y</span><span class="p">(</span><span class="nb">i</span><span class="p">),</span> <span class="n">x</span><span class="p">(</span><span class="nb">i</span><span class="p">))</span> <span class="o">*</span> <span class="nb">pi</span><span class="o">/</span><span class="mi">180</span><span class="p">;</span>
+<span class="lineno">21</span>             <span class="k">for</span> <span class="n">theta</span> <span class="p">=</span> <span class="p">[</span><span class="n">grad</span> <span class="nb">pi</span><span class="o">+</span><span class="n">grad</span><span class="p">]</span>
+<span class="lineno">22</span>                 <span class="c">% Calculate the center point to vote for. Take the current</span>
+<span class="lineno">23</span>                 <span class="c">% point and add/subtract some dx/dy to it</span>
+<span class="lineno">24</span>                 <span class="n">cx</span> <span class="p">=</span> <span class="n">uint32</span><span class="p">(</span><span class="n">x</span><span class="p">(</span><span class="nb">i</span><span class="p">)</span> <span class="o">+</span> <span class="n">radius</span> <span class="o">*</span> <span class="nb">cos</span><span class="p">(</span><span class="n">theta</span><span class="p">));</span>
+<span class="lineno">25</span>                 <span class="n">cy</span> <span class="p">=</span> <span class="n">uint32</span><span class="p">(</span><span class="n">y</span><span class="p">(</span><span class="nb">i</span><span class="p">)</span> <span class="o">-</span> <span class="n">radius</span> <span class="o">*</span> <span class="nb">sin</span><span class="p">(</span><span class="n">theta</span><span class="p">));</span>
+<span class="lineno">26</span> 
+<span class="lineno">27</span>                 <span class="k">if</span><span class="p">(</span><span class="n">cx</span> <span class="o">&gt;</span><span class="p">=</span> <span class="mi">1</span> <span class="o">&amp;&amp;</span> <span class="n">cx</span> <span class="o">&lt;</span><span class="p">=</span> <span class="nb">size</span><span class="p">(</span><span class="n">hough</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="n">cy</span> <span class="o">&gt;</span><span class="p">=</span> <span class="mi">1</span> <span class="o">&amp;&amp;</span> <span class="n">cy</span> <span class="o">&lt;</span><span class="p">=</span> <span class="nb">size</span><span class="p">(</span><span class="n">hough</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span> 
+<span class="lineno">28</span>                     <span class="n">hough</span><span class="p">(</span><span class="n">cx</span><span class="p">,</span> <span class="n">cy</span><span class="p">,</span> <span class="n">radius</span><span class="p">)</span> <span class="p">=</span> <span class="n">hough</span><span class="p">(</span><span class="n">cx</span><span class="p">,</span> <span class="n">cy</span><span class="p">,</span> <span class="n">radius</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;</span>
+<span class="lineno">29</span>                 <span class="k">end</span> 
+<span class="lineno">30</span>             <span class="k">end</span> 
+<span class="lineno">31</span>         <span class="k">end</span> 
+<span class="lineno">32</span>     <span class="k">end</span> 
+<span class="lineno">33</span>     
+<span class="lineno">34</span>     <span class="c">% Now we find the circles with the highest number of votes. First, we</span>
+<span class="lineno">35</span>     <span class="c">% smooth the hough space. Then, we take the first and second</span>
+<span class="lineno">36</span>     <span class="c">% derivatives to determine local maximum</span>
+<span class="lineno">37</span>     <span class="n">smooth</span> <span class="p">=</span> <span class="n">convn</span><span class="p">(</span><span class="n">hough</span><span class="p">,</span> <span class="n">fspecial</span><span class="p">(</span><span class="s">&#39;gaussian&#39;</span><span class="p">),</span> <span class="s">&#39;same&#39;</span><span class="p">);</span>
+<span class="lineno">38</span>     <span class="n">maxima</span> <span class="p">=</span> <span class="n">smooth</span> <span class="o">.*</span> <span class="n">imregionalmax</span><span class="p">(</span><span class="n">smooth</span><span class="p">,</span> <span class="mi">26</span><span class="p">);</span>
+<span class="lineno">39</span>     <span class="n">vector</span> <span class="p">=</span> <span class="n">nonzeros</span><span class="p">(</span><span class="nb">reshape</span><span class="p">(</span><span class="n">maxima</span><span class="p">,</span> <span class="nb">numel</span><span class="p">(</span><span class="n">maxima</span><span class="p">)</span> <span class="p">,</span> <span class="mi">1</span><span class="p">));</span>
+<span class="lineno">40</span>     <span class="p">[</span><span class="n">cx</span><span class="p">,</span> <span class="n">cy</span><span class="p">,</span> <span class="n">r</span><span class="p">]</span> <span class="p">=</span> <span class="nb">ind2sub</span><span class="p">(</span><span class="nb">size</span><span class="p">(</span><span class="n">hough</span><span class="p">),</span> <span class="nb">find</span><span class="p">(</span><span class="n">maxima</span> <span class="o">&gt;</span> <span class="n">max</span><span class="p">(</span><span class="n">vector</span><span class="p">)</span> <span class="o">.*</span> <span class="mf">0.60</span><span class="p">));</span>
+<span class="lineno">41</span>     <span class="n">circles</span> <span class="p">=</span> <span class="n">horzcat</span><span class="p">(</span><span class="n">cx</span><span class="p">,</span> <span class="n">cy</span><span class="p">,</span> <span class="n">r</span><span class="p">);</span> 
+<span class="lineno">42</span> <span class="k">end</span></code></pre></div>
+
 <h1 id="project-2-seam-carving">Project 2: Seam Carving</h1>
-<p><img align="center" style="margin: 0 auto; display: block;" src="/img/cv-a1.png" />
-<img align="center" style="margin: 0 auto; display: block;" src="/img/cv-a2.png" />
-<img align="center" style="margin: 0 auto; display: block;" src="/img/cv-a3.png" />
-<img align="center" style="margin: 0 auto; display: block;" src="/img/cv-a4.png" />
-<img align="center" style="margin: 0 auto; display: block;" src="/img/cv-a5.png" />
-<img align="center" style="margin: 0 auto; display: block;" src="/img/cv-a6.png" /></p>
+<div>
+<img align="center" style="float: left;  width: 49%;" src="/img/cv-a2.png" />
+<img align="center" style="float: right; width: 49%;" src="/img/cv-a3.png" />
+<div style="clear: both;" />
+</div>
+
+<div>
+<img align="center" style="float: left;  width: 49%;" src="/img/cv-a4.png" />
+<img align="center" style="float: right; width: 49%;" src="/img/cv-a6.png" />
+<img align="center" style="float: left;  width: 49%;" src="/img/cv-a5.png" />
+<div style="clear: both;" />
+</div>
 
 <h1 id="project-3-image-mosaics">Project 3: Image Mosaics</h1>
-<p><img align="center" style="margin: 0 auto; display: block;" src="/img/cv-b1.jpg" />
-<img align="center" style="margin: 0 auto; display: block;" src="/img/cv-b2.jpg" />
-<img align="center" style="margin: 0 auto; display: block;" src="/img/cv-b3.png" />
+<div>
+<img align="center" style="float: left;  width: 49%" src="/img/cv-b1.jpg" />
+<img align="center" style="float: right; width: 49%" src="/img/cv-b2.jpg" />
+<div style="clear: both;" />
+</div>
+
+<div class="highlight"><pre><code class="language-matlab" data-lang="matlab"><span class="k">function</span><span class="w"> </span>[ tform ] <span class="p">=</span><span class="w"> </span><span class="nf">homography</span><span class="p">(</span> x1, y1, x2, y2 <span class="p">)</span><span class="w"></span>
+<span class="c">%HOMOGRAPHY Computes the homography parameters</span>
+<span class="c">%   Computes the homography matrix by solving a system of linear equations</span>
+
+    <span class="k">if</span> <span class="o">~</span><span class="nb">isequal</span><span class="p">(</span><span class="nb">length</span><span class="p">(</span><span class="n">x1</span><span class="p">),</span> <span class="nb">length</span><span class="p">(</span><span class="n">y1</span><span class="p">),</span> <span class="nb">length</span><span class="p">(</span><span class="n">x2</span><span class="p">),</span> <span class="nb">length</span><span class="p">(</span><span class="n">y2</span><span class="p">))</span> <span class="o">||</span> <span class="nb">length</span><span class="p">(</span><span class="n">x1</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">4</span>
+        <span class="n">error</span><span class="p">(</span><span class="s">&#39;Input vectors must contain at least 4 values, and must be of the same size&#39;</span><span class="p">);</span>
+    <span class="k">end</span>
+    
+    <span class="c">% http://www.csc.kth.se/~perrose/files/pose-init-model/node17.html</span>
+    <span class="n">n</span>  <span class="p">=</span> <span class="nb">length</span><span class="p">(</span><span class="n">x1</span><span class="p">);</span>    
+    <span class="n">p1</span> <span class="p">=</span> <span class="p">[</span><span class="n">x1</span> <span class="n">y1</span> <span class="nb">ones</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="nb">zeros</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span> <span class="o">-</span><span class="n">x1</span><span class="o">.*</span><span class="n">x2</span> <span class="o">-</span><span class="n">y1</span><span class="o">.*</span><span class="n">x2</span><span class="p">];</span>
+    <span class="n">p2</span> <span class="p">=</span> <span class="p">[</span><span class="nb">zeros</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span> <span class="n">x1</span> <span class="n">y1</span> <span class="nb">ones</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="o">-</span><span class="n">x1</span><span class="o">.*</span><span class="n">y2</span> <span class="o">-</span><span class="n">y1</span><span class="o">.*</span><span class="n">y2</span><span class="p">];</span>
+    <span class="n">p</span>  <span class="p">=</span> <span class="nb">reshape</span><span class="p">([</span><span class="n">p1</span><span class="p">(:)</span> <span class="n">p2</span><span class="p">(:)]</span><span class="o">&#39;</span><span class="p">,</span> <span class="mi">2</span><span class="o">*</span><span class="nb">size</span><span class="p">(</span><span class="n">p1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">[]);</span>
+    <span class="n">b</span>  <span class="p">=</span> <span class="nb">reshape</span><span class="p">([</span><span class="n">x2</span><span class="p">(:)</span> <span class="n">y2</span><span class="p">(:)]</span><span class="o">&#39;</span><span class="p">,</span> <span class="mi">2</span><span class="o">*</span><span class="nb">length</span><span class="p">(</span><span class="n">x2</span><span class="p">),</span> <span class="p">[]);</span>
+    <span class="n">tform</span> <span class="p">=</span> <span class="nb">reshape</span><span class="p">([</span><span class="n">p</span><span class="o">\</span><span class="n">b</span><span class="p">;</span> <span class="mi">1</span><span class="p">],</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span><span class="o">&#39;</span><span class="p">;</span>
+<span class="k">end</span></code></pre></div>
+
+<p><img align="center" style="margin: 0 auto; display: block;" src="/img/cv-b3.png" />
 <img align="center" style="margin: 0 auto; display: block;" src="/img/cv-b4.png" />
 <img align="center" style="margin: 0 auto; display: block;" src="/img/cv-b5.png" /></p>
 
