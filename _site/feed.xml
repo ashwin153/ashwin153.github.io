@@ -5,8 +5,8 @@
     <description>The work and thoughts of a programmer</description>
     <link>http://ashwin153.github.io/</link>
     <atom:link href="http://ashwin153.github.io/feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Thu, 03 Dec 2015 22:38:35 -0600</pubDate>
-    <lastBuildDate>Thu, 03 Dec 2015 22:38:35 -0600</lastBuildDate>
+    <pubDate>Fri, 04 Dec 2015 05:07:49 -0600</pubDate>
+    <lastBuildDate>Fri, 04 Dec 2015 05:07:49 -0600</lastBuildDate>
     <generator>Jekyll v2.5.3</generator>
     
       <item>
@@ -254,7 +254,7 @@
 &lt;span class=&quot;lineno&quot;&gt;28&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;h1 id=&quot;project-3-synchronization&quot;&gt;Project 3: Synchronization&lt;/h1&gt;
-&lt;p&gt;With preemption comes every programmers worst nightmare, race conditions. Suppose you have two threads that are both trying to flip the value of some bit. Normally, you would expect something like the following to occur.&lt;/p&gt;
+&lt;p&gt;With preemption comes every programmers’ worst nightmare - race conditions. Suppose you have two threads that are both trying to flip the value of some bit. Normally, you would expect something like the following to occur.&lt;/p&gt;
 
 &lt;table&gt;
   &lt;thead&gt;
@@ -322,7 +322,48 @@
   &lt;/tbody&gt;
 &lt;/table&gt;
 
-&lt;p&gt;Sections of code that can be executed by multiple threads are called &lt;strong&gt;critical sections&lt;/strong&gt;. One way to deal with race conditions is to disable preemption within critical sections. This solution is acceptable for short critical sections and is implemented as a spin lock. Before entering a short critical section, a thread spins until it successfully holds a spin lock (typically implemented using an atomic compare-and-swap instruction), disables preemption, executes the critical section, and then unlocks the spin lock. However, this solution is unacceptable for longer critical sections, because it prevents other threads from getting a chance to run.&lt;/p&gt;
+&lt;p&gt;What can we do to prevent this problem from occurring? One way to deal with race conditions is to disable preemption within &lt;em&gt;critical sections&lt;/em&gt;, or sections of code that can be executed by multiple threads or access shared resources. However, this solution is only acceptable for short critical sections, because it prevents other threads from running for the duration of the critical section. This simple solution is implemented as a &lt;em&gt;spin lock&lt;/em&gt; in Linux. But what do we do for longer critical sections? How do we eliminate race conditions without preventing the rest of the system from making progress? The answer lies in the semaphore.&lt;/p&gt;
+
+&lt;p&gt;Suppose you are the cashier at a restaurant and you are helping a customer when another customer walks in. Because you can only serve one customer at a time, the customer waits in line until it is their turn to order. As customers keep coming in, they will continue to form a &lt;em&gt;queue&lt;/em&gt; until you are ready to help them. Now suppose there are &lt;em&gt;two&lt;/em&gt; cash registers in the restaurant, so that two customers can be served at once; customers still form a queue, but only if there are more than two of them in the restaurant. This metaphor describes the abstract behavior of a semaphore. A semaphore contains a count, a queue as well as a spin lock to prevent race conditions on semaphore operations, as well as two methods: &lt;em&gt;down&lt;/em&gt; and &lt;em&gt;up&lt;/em&gt;.&lt;/p&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th style=&quot;text-align: center&quot;&gt;method&lt;/th&gt;
+      &lt;th style=&quot;text-align: left&quot;&gt;condition&lt;/th&gt;
+      &lt;th style=&quot;text-align: left&quot;&gt;effect&lt;/th&gt;
+      &lt;th style=&quot;text-align: left&quot;&gt;analogy&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;down&lt;/td&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;count &amp;gt; 0&lt;/td&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;count decremented&lt;/td&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;available cashiers; so customer is immediately served&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;down&lt;/td&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;count == 0&lt;/td&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;thread added to queue&lt;/td&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;no available cashiers; so customer waits in line&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;up&lt;/td&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;queue.isEmpty()&lt;/td&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;count incremented&lt;/td&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;no waiting customers; so cashier is available/idle&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;up&lt;/td&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;!queue.isEmpty()&lt;/td&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;thread removed from queue&lt;/td&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;waiting customers; so next customer in line is served&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;Below is a simple implementation of a semaphore.&lt;/p&gt;
 
 &lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-c--&quot; data-lang=&quot;c++&quot;&gt;&lt;span class=&quot;lineno&quot;&gt; 1&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Semaphore&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
 &lt;span class=&quot;lineno&quot;&gt; 2&lt;/span&gt; 	&lt;span class=&quot;kt&quot;&gt;uint32_t&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;count&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
@@ -373,6 +414,8 @@
 &lt;span class=&quot;lineno&quot;&gt;47&lt;/span&gt; 		&lt;span class=&quot;n&quot;&gt;spin&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;unlock&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;was&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;	
 &lt;span class=&quot;lineno&quot;&gt;48&lt;/span&gt; 	&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
 &lt;span class=&quot;lineno&quot;&gt;49&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;};&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Another interesting problem in concurrency is the Producer-Consumer Problem. Suppose you have two threads and a shared buffer of finite size. The first thread is attempting to &lt;em&gt;put&lt;/em&gt; elements in the buffer (producer) and the second thread is attempting to &lt;em&gt;remove&lt;/em&gt; elements from the buffer (consumer). How do we ensure that the producer only places elements in the buffer when it is not full, and the consumer only removes elements from the buffer when it is not empty? The solution to this problem is to use bounded buffers, which make clever use of semaphores to ensure that the producer waits until there is free space in the buffer and the consumer waits until there is data in the buffer. My implementation of bounded buffers utilizes a circular array, two semaphores, and a mutex to solve the producer-consumer problem.&lt;/p&gt;
 
 &lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-c--&quot; data-lang=&quot;c++&quot;&gt;&lt;span class=&quot;lineno&quot;&gt; 1&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;BoundedBuffer&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
 &lt;span class=&quot;lineno&quot;&gt; 2&lt;/span&gt; 	&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;data&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
@@ -432,7 +475,10 @@
 &lt;span class=&quot;lineno&quot;&gt;56&lt;/span&gt; 
 &lt;span class=&quot;lineno&quot;&gt;57&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;};&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
+&lt;p&gt;In addition to these synchronization mechanisms, we also built events and barriers. Threads can &lt;em&gt;wait&lt;/em&gt; on events, and when another thread &lt;em&gt;signals&lt;/em&gt; that the event is complete, the waiting thread resumes execution. Barriers prevent threads from continuing until a set number of threads reach the barrier.&lt;/p&gt;
+
 &lt;h1 id=&quot;project-4-reference-counting&quot;&gt;Project 4: Reference Counting&lt;/h1&gt;
+&lt;p&gt;We now have a system capable of two forms of multithreading complete with its own heap as well as an assortment of synchronization mechanisms to eliminate pesky race conditions and facilitate parallelized computation and its only week 3!&lt;/p&gt;
 
 &lt;p&gt;&lt;img align=&quot;center&quot; style=&quot;margin: 0 auto; display: block;&quot; src=&quot;/img/os-strong-ptr.png&quot; /&gt;&lt;/p&gt;
 
