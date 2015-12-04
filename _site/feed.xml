@@ -5,8 +5,8 @@
     <description>The work and thoughts of a programmer</description>
     <link>http://ashwin153.github.io/</link>
     <atom:link href="http://ashwin153.github.io/feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Fri, 04 Dec 2015 05:07:49 -0600</pubDate>
-    <lastBuildDate>Fri, 04 Dec 2015 05:07:49 -0600</lastBuildDate>
+    <pubDate>Fri, 04 Dec 2015 12:36:53 -0600</pubDate>
+    <lastBuildDate>Fri, 04 Dec 2015 12:36:53 -0600</lastBuildDate>
     <generator>Jekyll v2.5.3</generator>
     
       <item>
@@ -467,7 +467,7 @@
 &lt;span class=&quot;lineno&quot;&gt;48&lt;/span&gt; 		&lt;span class=&quot;c1&quot;&gt;// Unlock the buffer&lt;/span&gt;
 &lt;span class=&quot;lineno&quot;&gt;49&lt;/span&gt; 		&lt;span class=&quot;n&quot;&gt;sem&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;up&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
 &lt;span class=&quot;lineno&quot;&gt;50&lt;/span&gt; 
-&lt;span class=&quot;lineno&quot;&gt;51&lt;/span&gt; 		&lt;span class=&quot;c1&quot;&gt;// Up the put semaphore to indicate that there is available space..&lt;/span&gt;
+&lt;span class=&quot;lineno&quot;&gt;51&lt;/span&gt; 		&lt;span class=&quot;c1&quot;&gt;// Up the put semaphore to indicate that there is available space.&lt;/span&gt;
 &lt;span class=&quot;lineno&quot;&gt;52&lt;/span&gt; 		&lt;span class=&quot;n&quot;&gt;put&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;up&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
 &lt;span class=&quot;lineno&quot;&gt;53&lt;/span&gt; 
 &lt;span class=&quot;lineno&quot;&gt;54&lt;/span&gt; 		&lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;v&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
@@ -478,9 +478,17 @@
 &lt;p&gt;In addition to these synchronization mechanisms, we also built events and barriers. Threads can &lt;em&gt;wait&lt;/em&gt; on events, and when another thread &lt;em&gt;signals&lt;/em&gt; that the event is complete, the waiting thread resumes execution. Barriers prevent threads from continuing until a set number of threads reach the barrier.&lt;/p&gt;
 
 &lt;h1 id=&quot;project-4-reference-counting&quot;&gt;Project 4: Reference Counting&lt;/h1&gt;
-&lt;p&gt;We now have a system capable of two forms of multithreading complete with its own heap as well as an assortment of synchronization mechanisms to eliminate pesky race conditions and facilitate parallelized computation and its only week 3!&lt;/p&gt;
+&lt;p&gt;We now have a system capable of two forms of multithreading, complete with its own heap as well as an assortment of synchronization mechanisms to eliminate pesky race conditions and facilitate parallelized computation, and its only week 3!&lt;/p&gt;
+
+&lt;p&gt;The next problem we have to consider is memory leaks. How do we ensure that objects are destructed when they are no longer in use and go out of scope? There are three places where a variable can “live”: stack frame, heap, and global memory. Objects in global memory do not ever go out of scope (definition of global), and it is trivial to detect when objects on the stack go out of scope (whenever they are popped off). The real challenge is detecting when heap allocated variables should be destructed.&lt;/p&gt;
+
+&lt;p&gt;There are two competing philosophies about how to clean up heap allocated variables: tracing garbage collection (GC) and automatic reference counting (ARC). GC takes an active approach to memory management; for example, a mark-and-sweep garbage collector will look through the stack frames and global memory of all threads, marks all referenced objects in the heap, and then scans the heap and destroys all unmarked objects. In contrast, an automatic reference counter keeps track of the number of references to an object and destroys the object when there are no references to it.&lt;/p&gt;
+
+&lt;p&gt;The benefit of tracing garbage collection is that it is simpler to implement and does not incur any extra overhead when accessing shared pointers. The downside of tracing garbage collection is that they take a significant amount of memory to run and prevent the system from making progress while they are running.&lt;/p&gt;
 
 &lt;p&gt;&lt;img align=&quot;center&quot; style=&quot;margin: 0 auto; display: block;&quot; src=&quot;/img/os-strong-ptr.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;We implemented automatic reference counting by creating a new pointer type, &lt;em&gt;Strong Ptr&lt;/em&gt;. Strong pointers contain a pointers to a counter and the underlying object. When the counter reaches zero, there are no more references to the object and the object is destructed. Below is a simple implementation of strong pointers.&lt;/p&gt;
 
 &lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-c&quot; data-lang=&quot;c&quot;&gt;&lt;span class=&quot;lineno&quot;&gt;  1&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;template&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;T&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;
 &lt;span class=&quot;lineno&quot;&gt;  2&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;StrongPtr&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;

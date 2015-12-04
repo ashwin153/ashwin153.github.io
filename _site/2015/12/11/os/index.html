@@ -420,7 +420,7 @@
 <span class="lineno">48</span> 		<span class="c1">// Unlock the buffer</span>
 <span class="lineno">49</span> 		<span class="n">sem</span> <span class="o">-&gt;</span> <span class="n">up</span><span class="p">();</span>
 <span class="lineno">50</span> 
-<span class="lineno">51</span> 		<span class="c1">// Up the put semaphore to indicate that there is available space..</span>
+<span class="lineno">51</span> 		<span class="c1">// Up the put semaphore to indicate that there is available space.</span>
 <span class="lineno">52</span> 		<span class="n">put</span> <span class="o">-&gt;</span> <span class="n">up</span><span class="p">();</span>
 <span class="lineno">53</span> 
 <span class="lineno">54</span> 		<span class="k">return</span> <span class="n">v</span><span class="p">;</span>
@@ -431,9 +431,17 @@
 <p>In addition to these synchronization mechanisms, we also built events and barriers. Threads can <em>wait</em> on events, and when another thread <em>signals</em> that the event is complete, the waiting thread resumes execution. Barriers prevent threads from continuing until a set number of threads reach the barrier.</p>
 
 <h1 id="project-4-reference-counting">Project 4: Reference Counting</h1>
-<p>We now have a system capable of two forms of multithreading complete with its own heap as well as an assortment of synchronization mechanisms to eliminate pesky race conditions and facilitate parallelized computation and its only week 3!</p>
+<p>We now have a system capable of two forms of multithreading, complete with its own heap as well as an assortment of synchronization mechanisms to eliminate pesky race conditions and facilitate parallelized computation, and its only week 3!</p>
+
+<p>The next problem we have to consider is memory leaks. How do we ensure that objects are destructed when they are no longer in use and go out of scope? There are three places where a variable can “live”: stack frame, heap, and global memory. Objects in global memory do not ever go out of scope (definition of global), and it is trivial to detect when objects on the stack go out of scope (whenever they are popped off). The real challenge is detecting when heap allocated variables should be destructed.</p>
+
+<p>There are two competing philosophies about how to clean up heap allocated variables: tracing garbage collection (GC) and automatic reference counting (ARC). GC takes an active approach to memory management; for example, a mark-and-sweep garbage collector will look through the stack frames and global memory of all threads, marks all referenced objects in the heap, and then scans the heap and destroys all unmarked objects. In contrast, an automatic reference counter keeps track of the number of references to an object and destroys the object when there are no references to it.</p>
+
+<p>The benefit of tracing garbage collection is that it is simpler to implement and does not incur any extra overhead when accessing shared pointers. The downside of tracing garbage collection is that they take a significant amount of memory to run and prevent the system from making progress while they are running.</p>
 
 <p><img align="center" style="margin: 0 auto; display: block;" src="/img/os-strong-ptr.png" /></p>
+
+<p>We implemented automatic reference counting by creating a new pointer type, <em>Strong Ptr</em>. Strong pointers contain a pointers to a counter and the underlying object. When the counter reaches zero, there are no more references to the object and the object is destructed. Below is a simple implementation of strong pointers.</p>
 
 <div class="highlight"><pre><code class="language-c" data-lang="c"><span class="lineno">  1</span> <span class="n">template</span> <span class="o">&lt;</span><span class="n">class</span> <span class="n">T</span><span class="o">&gt;</span>
 <span class="lineno">  2</span> <span class="n">class</span> <span class="n">StrongPtr</span> <span class="p">{</span>
