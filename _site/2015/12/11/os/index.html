@@ -103,7 +103,7 @@
 <p>In this class, we built a (shitty) operating system from scratch. Beginning from just a master boot record, we designed a system capable of executing multiple c programs concurrently, complete with its own file system, system call interface, shell, and automatic reference counter. Not too bad for one semester!</p>
 
 <h1 id="project-1-cooperative-threading">Project 1: Cooperative Threading</h1>
-<p>It may seem that you are running multiple programs simultaneously on your computer; in reality, processors can only perform one task at a time. Therefore, operating systems have to execute the programs in a manner that seems parallel but is actually sequential. One way of implementing interleaved execution is cooperative multitasking. A cooperative multitasking system cedes the responsibility of multiplexing user programs, who decide when want to <em>yield</em> to each other.</p>
+<p>It may seem that you are running multiple programs simultaneously on your computer; in reality, processors can only perform one task at a time. Therefore, operating systems have to execute the programs in a manner that seems parallel but is actually sequential. One way of implementing interleaved execution is cooperative multitasking. A cooperative multitasking system cedes the responsibility of multiplexing user programs to the user programs themselves, who must decide when they want to <em>yield</em> to each other.</p>
 
 <p>Our implementation of cooperative threading utilizes a simple first-in-first-out (FIFO) scheduler. The kernel maintains a ready queue of threads awaiting execution. Every time a program yields, it is placed on the end of the queue and the thread at the head of the queue is run. This procedure, known as a context switch, must first save the state of the active thread (registers, stack pointer, etc.) before switching, to ensure that the thread can pick up where it left off next time it is run. Our implementation of context switch only saves callee-saved registers (yield is a function call) and the stack pointer, but as additional features are added to our threading package we will need to save additional information in our context switch.</p>
 
@@ -132,13 +132,13 @@
 <h1 id="project-2-preemptive-threading-and-memory-heap">Project 2: Preemptive Threading and Memory Heap</h1>
 <p>Cooperative multitasking is a good solution if user programs are guaranteed to work together. In reality, it is unlikely that user programs will multiplex system resources efficiently and improbable that all user programs will be cooperative. Therefore, modern operating systems also implement preemptive multitasking. A preemptively multitasking system interrupts user programs at regular intervals to ensure that all processes are given a chance to run.</p>
 
-<p>To implement preemptive threading, we make use of interrupts, the interrupt descriptor table (IDT), the programmable interval timer (PIT). Interrupts are triggered by hardware or software to inform the processor of some event that requires attention. The processor stops what it is doing, saves its current state, locates the interrupt handler associated with the interrupt in the IDT, executes the handler, and then resumes what it was working on previously. The PIT is programmed to regularly trigger an interrupt whose interrupt handler forces the processor to perform a context switch.</p>
+<p>To implement preemptive threading, we make use of interrupts, the interrupt descriptor table (IDT), and the programmable interval timer (PIT). Interrupts are triggered by hardware or software to inform the processor of some event that requires attention. The processor stops what it is doing, saves its current state, locates the interrupt handler (a function) associated with the interrupt in the IDT, executes the handler, and then resumes what it was working on previously. The PIT is programmed to regularly trigger an interrupt whose interrupt handler forces the processor to perform a context switch.</p>
 
 <p>At this point, we have a system capable of interleaving program execution. However, this system has no mechanism for preventing programs from overwriting each other’s memory and for reallocating memory. A simple solution to the first problem is a naive heap consisting of a single pointer. Each time a request to allocate memory (malloc) comes in, the naive heap returns the pointer and increments it by the number of requested bytes. However, this implementation does not solve the second problem; once a memory address has been allocated, there is no way for that address to be reused for any other purpose. Therefore, a good heap must also keep track of available blocks of memory so that blocks can be reallocated once they are no longer in use.</p>
 
 <p><img align="center" style="margin: 0 auto; display: block;" src="/img/os-heap.png" /></p>
 
-<p>The left image in the picture above shows the proposed design of a block and implementation of malloc. Blocks contain a header and footer that store the total size of the block, pointers to the previous and next available blocks, as well as a region where data can be stored. The sign of the header and footer indicates whether or not the block is available; if positive the block is available, and if negative the block is allocated. The right image shows what occurs when malloc is called. The heap traverses the linked list of free blocks using the next pointers and locates the first block whose total size is greater than the number of requested bytes + 8 (adjusted for heap overhead). The heap then splits the block into two pieces, updates the header and footer information of each piece, and returns a pointer to the data region of the second piece.</p>
+<p>The left image in the picture above shows the proposed design of a block. Blocks contain a header and footer that store the total size of the block, pointers to the previous and next available blocks, as well as a region where data can be stored. The sign of the header and footer indicates whether or not the block is available; if positive the block is available, and if negative the block is allocated. The right image shows what occurs when malloc is called. The heap traverses the linked list of free blocks using the next pointers and locates the first block whose total size is greater than the number of requested bytes + 8 (adjusted for heap overhead). The heap then splits the block into two pieces, updates the header and footer information of each piece, and returns a pointer to the data region of the second piece.</p>
 
 <div class="highlight"><pre><code class="language-c" data-lang="c"><span class="lineno"> 1</span> <span class="kt">void</span><span class="o">*</span> <span class="nf">malloc</span><span class="p">(</span><span class="kt">size_t</span> <span class="n">bytes</span><span class="p">)</span> <span class="p">{</span>
 <span class="lineno"> 2</span> 	<span class="c1">// Empty List (return 0)</span>
@@ -207,30 +207,75 @@
 <span class="lineno">28</span> <span class="p">}</span></code></pre></div>
 
 <h1 id="project-3-synchronization">Project 3: Synchronization</h1>
+<p>With preemption comes every programmers worst nightmare, race conditions. Suppose you have two threads that are both trying to flip the value of some bit. Normally, you would expect something like the following to occur.</p>
 
-<div class="highlight"><pre><code class="language-c--" data-lang="c++"><span class="lineno"> 1</span> <span class="k">class</span> <span class="nc">SpinLock</span> <span class="p">{</span>
-<span class="lineno"> 2</span>     <span class="k">volatile</span> <span class="kt">uint32_t</span> <span class="n">flag</span><span class="p">;</span>
-<span class="lineno"> 3</span> <span class="k">public</span><span class="o">:</span>
-<span class="lineno"> 4</span>     <span class="n">SpinLock</span><span class="p">()</span> <span class="o">:</span> <span class="n">flag</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="p">{}</span>
-<span class="lineno"> 5</span> 
-<span class="lineno"> 6</span>     <span class="kr">inline</span> <span class="kt">bool</span> <span class="n">tryLock</span><span class="p">()</span> <span class="p">{</span>
-<span class="lineno"> 7</span>         <span class="kt">uint32_t</span> <span class="n">oldValue</span> <span class="o">=</span> <span class="n">cmpxchg</span><span class="p">(</span><span class="o">&amp;</span><span class="n">flag</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">);</span>
-<span class="lineno"> 8</span>         <span class="k">return</span> <span class="p">(</span><span class="n">oldValue</span> <span class="o">==</span> <span class="mi">0</span><span class="p">);</span>
-<span class="lineno"> 9</span>     <span class="p">}</span>
-<span class="lineno">10</span> 
-<span class="lineno">11</span>     <span class="kr">inline</span> <span class="kt">bool</span> <span class="n">lock</span><span class="p">()</span> <span class="p">{</span>
-<span class="lineno">12</span>         <span class="k">while</span> <span class="p">(</span><span class="nb">true</span><span class="p">)</span> <span class="p">{</span>
-<span class="lineno">13</span>             <span class="kt">bool</span> <span class="n">was</span> <span class="o">=</span> <span class="n">picDisable</span><span class="p">();</span>
-<span class="lineno">14</span>             <span class="k">if</span> <span class="p">(</span><span class="n">tryLock</span><span class="p">())</span> <span class="k">return</span> <span class="n">was</span><span class="p">;</span>
-<span class="lineno">15</span>             <span class="n">picRestore</span><span class="p">(</span><span class="n">was</span><span class="p">);</span>
-<span class="lineno">16</span>         <span class="p">}</span>
-<span class="lineno">17</span>     <span class="p">}</span>
-<span class="lineno">18</span> 
-<span class="lineno">19</span>     <span class="kr">inline</span> <span class="kt">void</span> <span class="n">unlock</span><span class="p">(</span><span class="kt">bool</span> <span class="n">was</span><span class="p">)</span> <span class="p">{</span>
-<span class="lineno">20</span>         <span class="n">flag</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-<span class="lineno">21</span>         <span class="n">picRestore</span><span class="p">(</span><span class="n">was</span><span class="p">);</span>
-<span class="lineno">22</span>     <span class="p">}</span>
-<span class="lineno">23</span> <span class="p">};</span></code></pre></div>
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center">thread 1</th>
+      <th style="text-align: center">thread 2</th>
+      <th style="text-align: center">bit</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center">read</td>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center">0</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">flip</td>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center">1</td>
+    </tr>
+    <tr>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center">read</td>
+      <td style="text-align: center">1</td>
+    </tr>
+    <tr>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center">flip</td>
+      <td style="text-align: center">0</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Remember, threads can be preempted at <em>any</em> time. Suppose thread 1 is preempted after it has read the value, but before it flips the bit. Then, thread 2 will read the <em>old</em> value of the bit. This sequence of events produces incorrect output.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center">thread 1</th>
+      <th style="text-align: center">thread 2</th>
+      <th style="text-align: center">bit</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center">read</td>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center">0</td>
+    </tr>
+    <tr>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center">read</td>
+      <td style="text-align: center">0</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">flip</td>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center">1</td>
+    </tr>
+    <tr>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center">flip</td>
+      <td style="text-align: center">1</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Sections of code that can be executed by multiple threads are called <strong>critical sections</strong>. One way to deal with race conditions is to disable preemption within critical sections. This solution is acceptable for short critical sections and is implemented as a spin lock. Before entering a short critical section, a thread spins until it successfully holds a spin lock (typically implemented using an atomic compare-and-swap instruction), disables preemption, executes the critical section, and then unlocks the spin lock. However, this solution is unacceptable for longer critical sections, because it prevents other threads from getting a chance to run.</p>
 
 <div class="highlight"><pre><code class="language-c--" data-lang="c++"><span class="lineno"> 1</span> <span class="k">class</span> <span class="nc">Semaphore</span> <span class="p">{</span>
 <span class="lineno"> 2</span> 	<span class="kt">uint32_t</span> <span class="n">count</span><span class="p">;</span>
