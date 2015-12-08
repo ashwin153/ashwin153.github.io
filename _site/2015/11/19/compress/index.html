@@ -104,7 +104,7 @@
 <h1 id="expressions">Expressions</h1>
 <p>Expressions are one-dimensional functions that can be evaluated at various values in a thread-safe manner. Expressions are compositions of simpler operations like addition, multiplication, and sine.</p>
 
-<h3 id="stack-expressions">Stack Expressions</h3>
+<h2 id="stack-expressions">Stack Expressions</h2>
 <p>Stack expressions are expressions that store their operations in reverse polish notation (RPN). RPN is a type of mathematical notation in which operations appear after their operands. For example, the expression 2+3-4 would be represented in RPN as 23+4-. The benefit of RPN is that expressions can be evaluated in a single pass without regard for order of operations using a single stack.</p>
 
 <div class="highlight"><pre><code class="language-java" data-lang="java"><span class="lineno"> 1</span> <span class="nd">@Override</span>
@@ -122,7 +122,7 @@
 <span class="lineno">13</span> 	<span class="k">return</span> <span class="n">stack</span><span class="o">.</span><span class="na">pop</span><span class="o">();</span>
 <span class="lineno">14</span> <span class="o">}</span></code></pre></div>
 
-<h3 id="tree-expressions">Tree Expressions</h3>
+<h2 id="tree-expressions">Tree Expressions</h2>
 <p>Tree expressions are expressions that store their operations in an expression tree. Each node of the expression tree represents an operation, whose inputs are the outputs of its child nodes. The image below shows the corresponding expression tree for the expression (4+3*7)-(5/(3+4))+6.</p>
 
 <p><img align="center" style="margin: 0 auto; display: block;" src="/img/compress-tree.jpg" /></p>
@@ -152,32 +152,54 @@
 
 <p>Another benefit of tree expressions is that they can be easily manipulated and modified by simply changing nodes in the tree. The drawbacks with tree expressions include larger memory usage.</p>
 
-<h3 id="verifying-thread-safety">Verifying Thread Safety</h3>
+<h2 id="verifying-thread-safety">Verifying Thread Safety</h2>
 <p>One of my biggest challenges was verifying that my implementation was thread-safe. The problem with testing for race conditions is that failures are non-deterministic. To eliminate the non-determinism I used a library called <a href="http://www.cs.umd.edu/~ayewah/projects/multithreadedtc/introduction.html">MultithreadedTC</a> which “features a metronome that is used to provide fine control over the sequence of activities in multiple threads”; in other words, MultithreadedTC is able to detect race conditions in a deterministic manner.</p>
 
-<h3 id="benchmarks">Benchmarks</h3>
+<h2 id="benchmarks">Benchmarks</h2>
+<p>To determine which expression implementation was <em>better</em>, I used <a href="https://github.com/google/caliper">Google Caliper</a> to benchmark their memory and runtime costs.</p>
+
+<div>
+<img align="center" style="float:  left; width: 49%;" src="/img/compress-balloc.png" />
+<img align="center" style="float: right; width: 49%;" src="/img/compress-bruntime.png" />
+<div style="clear: both;" />
+</div>
+
+<p>Clearly, the stack-based implementation is significantly faster while still using significantly less memory. My system is either too shitty to make use of the parallelized tree evaluation, or the costs of parallelization (increased overhead, etc.) are greater than its benefits.</p>
 
 <h1 id="curve-fitting">Curve Fitting</h1>
+<p>We now have a way to create and evaluate one-dimensional expressions. The next step is to implement curve fitting. Curve fitting attempts to find the curve (expression) that best fits a set of data points. Different curve fitting techniques will fit different kinds of curves; least squares regression fits polynomials and Fourier regression fits sums of sines and cosines. The graph below illustrates linear regression, which locates the line of best fit.</p>
 
-<h3 id="least-squares-regression">Least Squares Regression</h3>
+<p><img align="center" style="margin: 0 auto; display: block;" src="/img/compress-trend.png" /></p>
 
-<h3 id="discrete-fourier-regression">Discrete Fourier Regression</h3>
+<h2 id="least-squares-regression">Least Squares Regression</h2>
 
-<h3 id="genetic-regression">Genetic Regression</h3>
+<h2 id="discrete-fourier-regression">Discrete Fourier Regression</h2>
+
+<h2 id="genetic-regression">Genetic Regression</h2>
+<p>As you can probably tell by now, I’m a huge fan of reinventing the wheel. That’s why I decided to write my own genetic algorithm framework from scratch. It’s far from perfect and lacks many of the flashy features of more well established libraries like <a href="http://jgap.sourceforge.net/">JGAP</a> and <a href="http://www.jaga.org/">JAGA</a>, but it is parallelized, extensible, and, most importantly, simple and intuitive.</p>
+
+<h3 id="what-is-a-genetic-algorithm">What is a genetic algorithm?</h3>
+<p>Optimization technique that mimics elements of biological evolution (inheritance, crossover, mutation, and natural selection).</p>
+
+<h3 id="how-does-it-work">How does it work?</h3>
+
+<h3 id="example-1-function-minimization">Example 1: Function minimization</h3>
+
+<h3 id="example-2-evolutionary-curve-fitting">Example 2: Evolutionary curve-fitting</h3>
 
 <h1 id="mitigating-error">Mitigating Error</h1>
 
-<h3 id="modified-chunking-algorithm">Modified Chunking Algorithm</h3>
+<h2 id="modified-chunking-algorithm">Modified Chunking Algorithm</h2>
 
-<h3 id="genetic-bit-weight-optimizer">Genetic Bit Weight Optimizer</h3>
+<h2 id="genetic-bit-weight-optimizer">Genetic Bit Weight Optimizer</h2>
 
 <h1 id="encoding-and-decoding">Encoding and Decoding</h1>
 
-<h3 id="java-serialization">Java Serialization</h3>
+<h2 id="java-serialization">Java Serialization</h2>
 
-<h3 id="kryo-serialization">Kryo Serialization</h3>
+<h2 id="kryo-serialization">Kryo Serialization</h2>
 
-<h3 id="custom-serialization">Custom Serialization</h3>
+<h2 id="custom-serialization">Custom Serialization</h2>
 
 <h1 id="results">Results</h1>
 

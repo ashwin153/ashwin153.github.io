@@ -562,7 +562,87 @@
 
 <h1 id="project-10-shell">Project 10: Shell</h1>
 
+<div class="highlight"><pre><code class="language-c--" data-lang="c++"><span class="lineno"> 1</span> <span class="kt">int</span> <span class="nf">exec</span><span class="p">(</span><span class="kt">char</span><span class="o">*</span> <span class="n">name</span><span class="p">,</span> <span class="kt">int</span> <span class="n">nargs</span><span class="p">,</span> <span class="kt">char</span><span class="o">**</span> <span class="n">args</span><span class="p">)</span> <span class="p">{</span> 
+<span class="lineno"> 2</span> 	<span class="c1">// Lookup program in the file system. Make sure the file exists, and</span>
+<span class="lineno"> 3</span> 	<span class="c1">// that it is executable (all executable ELF files begin with a</span>
+<span class="lineno"> 4</span> 	<span class="c1">// special four byte sequence).</span>
+<span class="lineno"> 5</span> 	<span class="n">StrongPtr</span><span class="o">&lt;</span><span class="n">File</span><span class="o">&gt;</span> <span class="n">file</span> <span class="o">=</span> <span class="n">kernelInfo</span><span class="o">-&gt;</span><span class="n">rootDir</span><span class="o">-&gt;</span><span class="n">lookupFile</span><span class="p">(</span><span class="n">name</span><span class="p">);</span>
+<span class="lineno"> 6</span> 	<span class="k">if</span><span class="p">(</span><span class="n">file</span><span class="p">.</span><span class="n">isNull</span><span class="p">())</span> <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+<span class="lineno"> 7</span> 	<span class="kt">char</span><span class="o">*</span> <span class="n">buf</span> <span class="o">=</span> <span class="k">new</span> <span class="kt">char</span><span class="p">[</span><span class="mi">4</span><span class="p">];</span>
+<span class="lineno"> 8</span> 	<span class="n">file</span><span class="o">-&gt;</span><span class="n">read</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">buf</span><span class="p">,</span> <span class="mi">4</span><span class="p">);</span>
+<span class="lineno"> 9</span> 	<span class="k">if</span><span class="p">(</span><span class="n">buf</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">!=</span><span class="mh">0x7f</span> <span class="o">||</span> <span class="n">buf</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">!=</span><span class="sc">&#39;E&#39;</span> <span class="o">||</span> <span class="n">buf</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">!=</span><span class="sc">&#39;L&#39;</span> <span class="o">||</span> <span class="n">buf</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">!=</span><span class="sc">&#39;F&#39;</span><span class="p">)</span> <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+<span class="lineno">10</span> 
+<span class="lineno">11</span> 	<span class="c1">// Push (1) arguments onto the user stack, (2) push pointers to</span>
+<span class="lineno">12</span> 	<span class="c1">// those arguments, (3) push pointer to the pointers, and (4)</span>
+<span class="lineno">13</span> 	<span class="c1">// push the number of arguments onto the stack.</span>
+<span class="lineno">14</span> 	<span class="kt">uint32_t</span> <span class="o">*</span><span class="n">base</span> <span class="o">=</span> <span class="p">(</span><span class="kt">uint32_t</span><span class="o">*</span><span class="p">)</span> <span class="mh">0xffffff00</span><span class="p">;</span>
+<span class="lineno">15</span> 	<span class="kt">uint32_t</span> <span class="o">*</span><span class="n">ptrs</span> <span class="o">=</span> <span class="k">new</span> <span class="kt">uint32_t</span><span class="p">[</span><span class="n">esp</span><span class="p">[</span><span class="mi">2</span><span class="p">]];</span>
+<span class="lineno">16</span> 
+<span class="lineno">17</span> 	<span class="k">for</span><span class="p">(</span><span class="kt">uint32_t</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">nargs</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+<span class="lineno">18</span> 		<span class="kt">char</span><span class="o">*</span> <span class="n">ptr</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+<span class="lineno">19</span> 		<span class="k">if</span><span class="p">(</span><span class="n">ptr</span> <span class="o">&lt;</span> <span class="n">USERLAND</span> <span class="o">||</span> <span class="n">String</span><span class="o">::</span><span class="n">strlen</span><span class="p">(</span><span class="n">ptr</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span> <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+<span class="lineno">20</span> 		<span class="kt">uint32_t</span> <span class="n">len</span> <span class="o">=</span> <span class="n">String</span><span class="o">::</span><span class="n">strlen</span><span class="p">(</span><span class="n">ptr</span><span class="p">)</span><span class="o">+</span><span class="mi">1</span><span class="p">;</span>
+<span class="lineno">21</span> 		<span class="n">base</span> <span class="o">=</span> <span class="p">(</span><span class="kt">uint32_t</span><span class="o">*</span><span class="p">)((</span><span class="kt">uint32_t</span><span class="p">)</span> <span class="n">base</span> <span class="o">-</span> <span class="n">len</span><span class="p">);</span>
+<span class="lineno">22</span> 		<span class="n">memcpy</span><span class="p">(</span><span class="n">base</span><span class="p">,</span> <span class="n">ptr</span><span class="p">,</span> <span class="n">len</span><span class="p">);</span>
+<span class="lineno">23</span> 		<span class="n">ptrs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="kt">uint32_t</span><span class="p">)</span> <span class="n">base</span><span class="p">;</span>
+<span class="lineno">24</span> 	<span class="p">}</span>   
+<span class="lineno">25</span> 		
+<span class="lineno">26</span> 	<span class="n">base</span> <span class="o">-=</span> <span class="k">sizeof</span><span class="p">(</span><span class="kt">uint32_t</span><span class="o">*</span><span class="p">)</span> <span class="o">*</span> <span class="n">nargs</span><span class="p">;</span>
+<span class="lineno">27</span> 	<span class="n">memcpy</span><span class="p">(</span><span class="n">base</span><span class="p">,</span> <span class="n">ptrs</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="kt">uint32_t</span><span class="o">*</span><span class="p">)</span> <span class="o">*</span> <span class="n">nargs</span><span class="p">);</span>
+<span class="lineno">28</span> 	<span class="n">base</span> <span class="o">-=</span> <span class="mi">2</span><span class="p">;</span>
+<span class="lineno">29</span> 	<span class="o">*</span><span class="p">(</span><span class="n">base</span><span class="o">+</span><span class="mi">0</span><span class="p">)</span> <span class="o">=</span> <span class="n">nargs</span><span class="p">;</span>
+<span class="lineno">30</span> 	<span class="o">*</span><span class="p">(</span><span class="n">base</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span> <span class="o">=</span> <span class="p">(</span><span class="kt">uint32_t</span><span class="p">)</span> <span class="p">(</span><span class="n">base</span> <span class="o">+</span> <span class="mi">2</span><span class="p">);</span>
+<span class="lineno">31</span> 	<span class="n">switchToUser</span><span class="p">(</span><span class="n">ELF</span><span class="o">::</span><span class="n">load</span><span class="p">(</span><span class="n">file</span><span class="p">),</span> <span class="p">(</span><span class="kt">uint32_t</span><span class="p">)</span> <span class="n">base</span><span class="p">,</span> <span class="mh">0x0</span><span class="p">);</span>
+<span class="lineno">32</span> <span class="p">}</span></code></pre></div>
+
 <h1 id="project-11-pipes-user-threads-and-exit-statuses">Project 11: Pipes, User Threads, and Exit Statuses</h1>
+
+<div class="highlight"><pre><code class="language-c--" data-lang="c++"><span class="lineno"> 1</span> <span class="cp">#define PIPE_SIZE 1024</span>
+<span class="lineno"> 2</span> 
+<span class="lineno"> 3</span> <span class="k">class</span> <span class="nc">Pipe</span> <span class="o">:</span> <span class="k">public</span> <span class="n">File</span> <span class="p">{</span>
+<span class="lineno"> 4</span> 
+<span class="lineno"> 5</span> 	<span class="n">StrongPtr</span><span class="o">&lt;</span><span class="n">BoundedBuffer</span><span class="o">&lt;</span><span class="kt">char</span><span class="o">&gt;&gt;</span> <span class="n">rbuf</span><span class="p">;</span>
+<span class="lineno"> 6</span> 	<span class="n">StrongPtr</span><span class="o">&lt;</span><span class="n">BoundedBuffer</span><span class="o">&lt;</span><span class="kt">char</span><span class="o">&gt;&gt;</span> <span class="n">wbuf</span><span class="p">;</span>
+<span class="lineno"> 7</span> 
+<span class="lineno"> 8</span> <span class="k">public</span><span class="o">:</span>
+<span class="lineno"> 9</span> 
+<span class="lineno">10</span> 	<span class="n">Pipe</span><span class="p">()</span> <span class="p">{</span>
+<span class="lineno">11</span> 		<span class="n">rbuf</span> <span class="o">=</span> <span class="n">StrongPtr</span><span class="o">&lt;</span><span class="n">BoundedBuffer</span><span class="o">&lt;</span><span class="kt">char</span><span class="o">&gt;&gt;</span><span class="p">(</span><span class="k">new</span> <span class="n">BoundedBuffer</span><span class="o">&lt;</span><span class="kt">char</span><span class="o">&gt;</span><span class="p">(</span><span class="n">PIPE_SIZE</span><span class="p">));</span>
+<span class="lineno">12</span> 		<span class="n">wbuf</span> <span class="o">=</span> <span class="n">StrongPtr</span><span class="o">&lt;</span><span class="n">BoundedBuffer</span><span class="o">&lt;</span><span class="kt">char</span><span class="o">&gt;&gt;</span><span class="p">();</span>
+<span class="lineno">13</span> 	<span class="p">}</span>
+<span class="lineno">14</span> 
+<span class="lineno">15</span> 	<span class="n">Pipe</span><span class="p">(</span><span class="n">Pipe</span><span class="o">*</span> <span class="n">pipe</span><span class="p">)</span> <span class="p">{</span>
+<span class="lineno">16</span> 		<span class="n">rbuf</span> <span class="o">=</span> <span class="n">StrongPtr</span><span class="o">&lt;</span><span class="n">BoundedBuffer</span><span class="o">&lt;</span><span class="kt">char</span><span class="o">&gt;&gt;</span><span class="p">(</span><span class="k">new</span> <span class="n">BoundedBuffer</span><span class="o">&lt;</span><span class="kt">char</span><span class="o">&gt;</span><span class="p">(</span><span class="n">PIPE_SIZE</span><span class="p">));</span>
+<span class="lineno">17</span> 		<span class="n">wbuf</span> <span class="o">=</span> <span class="n">pipe</span><span class="o">-&gt;</span><span class="n">rbuf</span><span class="p">;</span>
+<span class="lineno">18</span> 		<span class="n">pipe</span><span class="o">-&gt;</span><span class="n">wbuf</span> <span class="o">=</span> <span class="n">rbuf</span><span class="p">;</span>
+<span class="lineno">19</span> 	<span class="p">}</span>
+<span class="lineno">20</span> 
+<span class="lineno">21</span> 	<span class="kr">inline</span> <span class="kt">uint32_t</span> <span class="n">getType</span><span class="p">()</span> <span class="p">{</span>
+<span class="lineno">22</span> 		<span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+<span class="lineno">23</span> 	<span class="p">}</span>
+<span class="lineno">24</span> 
+<span class="lineno">25</span> 	<span class="kr">inline</span> <span class="kt">uint32_t</span> <span class="n">getLength</span><span class="p">()</span> <span class="p">{</span>
+<span class="lineno">26</span> 		<span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+<span class="lineno">27</span> 	<span class="p">}</span>
+<span class="lineno">28</span> 
+<span class="lineno">29</span> 	<span class="kt">size_t</span> <span class="n">read</span><span class="p">(</span><span class="kt">size_t</span> <span class="n">offset</span><span class="p">,</span> <span class="kt">void</span><span class="o">*</span> <span class="n">buf</span><span class="p">,</span> <span class="kt">size_t</span> <span class="n">nbytes</span><span class="p">)</span> <span class="p">{</span>
+<span class="lineno">30</span> 		<span class="k">return</span> <span class="n">readAll</span><span class="p">(</span><span class="n">offset</span><span class="p">,</span> <span class="n">buf</span><span class="p">,</span> <span class="n">nbytes</span><span class="p">);</span>
+<span class="lineno">31</span> 	<span class="p">}</span>
+<span class="lineno">32</span> 
+<span class="lineno">33</span> 	<span class="kt">size_t</span> <span class="n">readAll</span><span class="p">(</span><span class="kt">size_t</span> <span class="n">offset</span><span class="p">,</span> <span class="kt">void</span><span class="o">*</span> <span class="n">buf</span><span class="p">,</span> <span class="kt">size_t</span> <span class="n">nbytes</span><span class="p">)</span> <span class="p">{</span>
+<span class="lineno">34</span> 		<span class="kt">char</span><span class="o">*</span> <span class="n">buffer</span> <span class="o">=</span> <span class="p">(</span><span class="kt">char</span><span class="o">*</span><span class="p">)</span> <span class="n">buf</span><span class="p">;</span>
+<span class="lineno">35</span> 		<span class="k">for</span><span class="p">(</span><span class="kt">uint32_t</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">nbytes</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
+<span class="lineno">36</span> 			<span class="n">buffer</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">rbuf</span><span class="o">-&gt;</span><span class="n">get</span><span class="p">();</span>
+<span class="lineno">37</span> 		<span class="k">return</span> <span class="n">nbytes</span><span class="p">;</span>
+<span class="lineno">38</span> 	<span class="p">}</span>
+<span class="lineno">39</span> 
+<span class="lineno">40</span> 	<span class="kt">size_t</span> <span class="n">write</span><span class="p">(</span><span class="kt">size_t</span> <span class="n">offset</span><span class="p">,</span> <span class="kt">void</span><span class="o">*</span> <span class="n">buf</span><span class="p">,</span> <span class="kt">size_t</span> <span class="n">nbytes</span><span class="p">)</span> <span class="p">{</span>
+<span class="lineno">41</span> 		<span class="kt">char</span><span class="o">*</span> <span class="n">buffer</span> <span class="o">=</span> <span class="p">(</span><span class="kt">char</span><span class="o">*</span><span class="p">)</span> <span class="n">buf</span><span class="p">;</span>
+<span class="lineno">42</span> 		<span class="k">for</span><span class="p">(</span><span class="kt">uint32_t</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">nbytes</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
+<span class="lineno">43</span> 			<span class="n">wbuf</span><span class="o">-&gt;</span><span class="n">put</span><span class="p">(</span><span class="n">buffer</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span>
+<span class="lineno">44</span> 		<span class="k">return</span> <span class="n">nbytes</span><span class="p">;</span>
+<span class="lineno">45</span> 	<span class="p">}</span>
+<span class="lineno">46</span> <span class="p">};</span></code></pre></div>
 
 <h1 id="project-12-kernel-durability">Project 12: Kernel Durability</h1>
 
