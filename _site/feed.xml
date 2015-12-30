@@ -5,8 +5,8 @@
     <description>The work and thoughts of a programmer</description>
     <link>http://ashwin153.github.io/</link>
     <atom:link href="http://ashwin153.github.io/feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Sat, 19 Dec 2015 12:18:29 -0800</pubDate>
-    <lastBuildDate>Sat, 19 Dec 2015 12:18:29 -0800</lastBuildDate>
+    <pubDate>Tue, 29 Dec 2015 23:50:52 -0800</pubDate>
+    <lastBuildDate>Tue, 29 Dec 2015 23:50:52 -0800</lastBuildDate>
     <generator>Jekyll v2.5.3</generator>
     
       <item>
@@ -148,11 +148,10 @@
 &lt;/div&gt;
 
 &lt;h1 id=&quot;project-3-image-mosaics&quot;&gt;Project 3: Image Mosaics&lt;/h1&gt;
-&lt;div&gt;
-&lt;img align=&quot;center&quot; style=&quot;float: left;  width: 49%&quot; src=&quot;/img/cv-b1.jpg&quot; /&gt;
-&lt;img align=&quot;center&quot; style=&quot;float: right; width: 49%&quot; src=&quot;/img/cv-b2.jpg&quot; /&gt;
-&lt;div style=&quot;clear: both;&quot; /&gt;
-&lt;/div&gt;
+
+&lt;h2 id=&quot;transformations-linear-affine-and-projective&quot;&gt;Transformations: Linear, Affine, and Projective&lt;/h2&gt;
+
+&lt;h2 id=&quot;computing-homographies&quot;&gt;Computing Homographies&lt;/h2&gt;
 
 &lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-matlab&quot; data-lang=&quot;matlab&quot;&gt;&lt;span class=&quot;k&quot;&gt;function&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;[ tform ] &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;homography&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt; x1, y1, x2, y2 &lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;&lt;/span&gt;
 &lt;span class=&quot;c&quot;&gt;%HOMOGRAPHY Computes the homography parameters&lt;/span&gt;
@@ -171,9 +170,18 @@
     &lt;span class=&quot;n&quot;&gt;tform&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;reshape&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;([&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;p&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;\&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;b&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;],&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
 &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
+&lt;h2 id=&quot;panoramas&quot;&gt;Panoramas&lt;/h2&gt;
+&lt;div&gt;
+&lt;img align=&quot;center&quot; style=&quot;float: left;  width: 49%&quot; src=&quot;/img/cv-b1.jpg&quot; /&gt;
+&lt;img align=&quot;center&quot; style=&quot;float: right; width: 49%&quot; src=&quot;/img/cv-b2.jpg&quot; /&gt;
+&lt;div style=&quot;clear: both;&quot; /&gt;
+&lt;/div&gt;
+
 &lt;p&gt;&lt;img align=&quot;center&quot; style=&quot;margin: 0 auto; display: block;&quot; src=&quot;/img/cv-b3.png&quot; /&gt;
-&lt;img align=&quot;center&quot; style=&quot;margin: 0 auto; display: block;&quot; src=&quot;/img/cv-b4.png&quot; /&gt;
-&lt;img align=&quot;center&quot; style=&quot;margin: 0 auto; display: block;&quot; src=&quot;/img/cv-b5.png&quot; /&gt;&lt;/p&gt;
+&lt;img align=&quot;center&quot; style=&quot;margin: 0 auto; display: block;&quot; src=&quot;/img/cv-b4.png&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;rectification&quot;&gt;Rectification&lt;/h2&gt;
+&lt;p&gt;&lt;img align=&quot;center&quot; style=&quot;margin: 0 auto; display: block;&quot; src=&quot;/img/cv-b5.png&quot; /&gt;&lt;/p&gt;
 
 &lt;h1 id=&quot;project-4-object-detection&quot;&gt;Project 4: Object Detection&lt;/h1&gt;
 &lt;p&gt;&lt;img align=&quot;center&quot; style=&quot;margin: 0 auto; display: block;&quot; src=&quot;/img/cv-c1.png&quot; /&gt;
@@ -182,7 +190,18 @@
 &lt;img align=&quot;center&quot; style=&quot;margin: 0 auto; display: block;&quot; src=&quot;/img/cv-c4.png&quot; /&gt;&lt;/p&gt;
 
 &lt;h1 id=&quot;project-5-face-detection&quot;&gt;Project 5: Face Detection&lt;/h1&gt;
-&lt;p&gt;&lt;img align=&quot;center&quot; style=&quot;margin: 0 auto; display: block;&quot; src=&quot;/img/cv-e13.png&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;In this assignment, we trained a linear support vector machine on histograms of oriented gradients (HoG) features extracted from face datasets in order to perform face detection. Our approach is based on the work of &lt;a href=&quot;http://lear.inrialpes.fr/people/triggs/pubs/Dalal-cvpr05.pdf&quot;&gt;Dalal and Triggs&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h2 id=&quot;overview-1&quot;&gt;Overview&lt;/h2&gt;
+
+&lt;h3 id=&quot;what-is-a-hog&quot;&gt;What is a HoG?&lt;/h3&gt;
+
+&lt;h3 id=&quot;what-is-a-svm&quot;&gt;What is a SVM?&lt;/h3&gt;
+
+&lt;h2 id=&quot;training-the-linear-svm&quot;&gt;Training the Linear SVM&lt;/h2&gt;
+&lt;p&gt;Every good machine learning algorithm is built upon good data. We trained our linear classifier on HoG features extracted from faces in the &lt;a href=&quot;http://www.vision.caltech.edu/Image_Datasets/Caltech_10K_WebFaces/&quot;&gt;Caltech Web Faces Project&lt;/a&gt; and non-faces in the Wu et. al and &lt;a href=&quot;http://groups.csail.mit.edu/vision/SUN/&quot;&gt;SUN Scene&lt;/a&gt; datasets using the &lt;a href=&quot;http://www.vlfeat.org/&quot;&gt;VLFeat Library&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;The images below are visualizations of the trained classifier. The image on the left uses a HoG cell size of 6 and the image on the right uses a HoG cell size of 3. Smaller cell sizes provide more descriptive features and increase classifier accuracy, but significantly reduce classifier performance and increase training time.&lt;/p&gt;
 
 &lt;div&gt;
 &lt;img align=&quot;center&quot; style=&quot;float:  left; width: 49%&quot; src=&quot;/img/cv-e11.png&quot; /&gt;
@@ -190,16 +209,25 @@
 &lt;div style=&quot;clear: both&quot; /&gt;
 &lt;/div&gt;
 
-&lt;p&gt;&lt;img align=&quot;center&quot; style=&quot;margin: 0 auto; display: block;&quot; src=&quot;/img/cv-e1.png&quot; /&gt;
-&lt;img align=&quot;center&quot; style=&quot;margin: 0 auto; display: block;&quot; src=&quot;/img/cv-e2.png&quot; /&gt;
-&lt;img align=&quot;center&quot; style=&quot;margin: 0 auto; display: block;&quot; src=&quot;/img/cv-e3.png&quot; /&gt;
-&lt;img align=&quot;center&quot; style=&quot;margin: 0 auto; display: block;&quot; src=&quot;/img/cv-e4.png&quot; /&gt;
-&lt;img align=&quot;center&quot; style=&quot;margin: 0 auto; display: block;&quot; src=&quot;/img/cv-e5.png&quot; /&gt;
-&lt;img align=&quot;center&quot; style=&quot;margin: 0 auto; display: block;&quot; src=&quot;/img/cv-e6.png&quot; /&gt;
-&lt;img align=&quot;center&quot; style=&quot;margin: 0 auto; display: block;&quot; src=&quot;/img/cv-e7.png&quot; /&gt;
-&lt;img align=&quot;center&quot; style=&quot;margin: 0 auto; display: block;&quot; src=&quot;/img/cv-e8.png&quot; /&gt;
-&lt;img align=&quot;center&quot; style=&quot;margin: 0 auto; display: block;&quot; src=&quot;/img/cv-e9.png&quot; /&gt;
-&lt;img align=&quot;center&quot; style=&quot;margin: 0 auto; display: block;&quot; src=&quot;/img/cv-e10.png&quot; /&gt;&lt;/p&gt;
+&lt;h2 id=&quot;results-1&quot;&gt;Results&lt;/h2&gt;
+&lt;p&gt;The images below show the result of applying the classifier to images of soccer teams. The yellow rectangles  represent actual faces drawn by a human, the green rectangles represent actual faces identified by the classifer (true positives) and the red rectangles represent faces identified by the classifier that are not actually faces (false positives).&lt;/p&gt;
+
+&lt;div&gt;
+&lt;img align=&quot;center&quot; style=&quot;float: left;  width: 49%;&quot; src=&quot;/img/cv-e7.png&quot; /&gt;
+&lt;img align=&quot;center&quot; style=&quot;float: right; width: 49%;&quot; src=&quot;/img/cv-e8.png&quot; /&gt;
+&lt;div style=&quot;clear: both;&quot; /&gt;
+&lt;/div&gt;
+
+&lt;p&gt;The images below show the result of applying the classifier to images of my computer vision class. The image on the left shows the result for regular faces and the image on the right shows the result for occluded faces. Even though people deliberately tried to fool the face detector, my algorithm was still able to detect some of the faces.&lt;/p&gt;
+
+&lt;div&gt;
+&lt;img align=&quot;center&quot; style=&quot;float: left;  width: 49%;&quot; src=&quot;/img/cv-e2.png&quot; /&gt;
+&lt;img align=&quot;center&quot; style=&quot;float: right; width: 49%;&quot; src=&quot;/img/cv-e4.png&quot; /&gt;
+&lt;div style=&quot;clear: both;&quot; /&gt;
+&lt;/div&gt;
+
+&lt;h2 id=&quot;benchmarks&quot;&gt;Benchmarks&lt;/h2&gt;
+&lt;p&gt;&lt;img align=&quot;center&quot; style=&quot;margin: 0 auto; display: block;&quot; src=&quot;/img/cv-e10.png&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;Cover photograph by &lt;a href=&quot;http://wallpaperswide.com/clear_vision-wallpapers.html&quot;&gt;wallpaperswide.com&lt;/a&gt;.&lt;/p&gt;
 </description>
@@ -780,7 +808,7 @@
 &lt;p&gt;Expressions are one-dimensional functions that can be evaluated at various values in a thread-safe manner. Expressions are compositions of simpler operations like addition, multiplication, and sine.&lt;/p&gt;
 
 &lt;h2 id=&quot;stack-expressions&quot;&gt;Stack Expressions&lt;/h2&gt;
-&lt;p&gt;Stack expressions are expressions that store their operations in reverse polish notation (RPN). RPN is a type of mathematical notation in which operations appear after their operands. For example, the expression 2+3-4 would be represented in RPN as 23+4-. The benefit of RPN is that expressions can be evaluated in a single pass without regard for order of operations using a single stack.&lt;/p&gt;
+&lt;p&gt;Stack expressions are expressions that store their operations in reverse polish notation (RPN). RPN is a type of mathematical notation in which operations appear after their operands. For example, the expression 2+3-4 would be represented in RPN as 23+4-. The benefit of RPN is that expressions can be evaluated in a single pass without regard for order of operations, using a single stack.&lt;/p&gt;
 
 &lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-java&quot; data-lang=&quot;java&quot;&gt;&lt;span class=&quot;lineno&quot;&gt; 1&lt;/span&gt; &lt;span class=&quot;nd&quot;&gt;@Override&lt;/span&gt;
 &lt;span class=&quot;lineno&quot;&gt; 2&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;BigDecimal&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;eval&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;throws&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Exception&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
@@ -842,7 +870,7 @@
 &lt;p&gt;Clearly, the stack-based implementation is significantly faster while still using significantly less memory. My system is either too shitty to make use of the parallelized tree evaluation, or the costs of parallelization (increased overhead, etc.) are greater than its benefits.&lt;/p&gt;
 
 &lt;h1 id=&quot;curve-fitting&quot;&gt;Curve Fitting&lt;/h1&gt;
-&lt;p&gt;We now have a way to create and evaluate one-dimensional expressions. The next step is to implement curve fitting. Curve fitting attempts to find the curve (expression) that best fits a set of data points. Different curve fitting techniques will fit different kinds of curves; least squares regression fits polynomials and Fourier regression fits sums of sines and cosines. The graph below illustrates linear regression, which locates the line of best fit.&lt;/p&gt;
+&lt;p&gt;We now have two ways to create and evaluate one-dimensional expressions. The next step is to implement curve fitting. Curve fitting attempts to find the curve (expression) that best fits a set of data points. Different curve fitting techniques will fit different kinds of curves; least squares regression fits polynomials and Fourier regression fits sums of sines and cosines. The graph below illustrates linear regression, a type of curve fitting that locates the &lt;em&gt;line&lt;/em&gt; of best fit.&lt;/p&gt;
 
 &lt;p&gt;&lt;img align=&quot;center&quot; style=&quot;margin: 0 auto; display: block;&quot; src=&quot;/img/compress-trend.png&quot; /&gt;&lt;/p&gt;
 
@@ -854,13 +882,13 @@
 &lt;p&gt;As you can probably tell by now, I’m a huge fan of reinventing the wheel. That’s why I decided to write my own genetic algorithm framework from scratch. It’s far from perfect and lacks many of the flashy features of more well established libraries like &lt;a href=&quot;http://jgap.sourceforge.net/&quot;&gt;JGAP&lt;/a&gt; and &lt;a href=&quot;http://www.jaga.org/&quot;&gt;JAGA&lt;/a&gt;, but it is parallelized, extensible, and, most importantly, simple and intuitive.&lt;/p&gt;
 
 &lt;h3 id=&quot;what-is-a-genetic-algorithm&quot;&gt;What is a genetic algorithm?&lt;/h3&gt;
-&lt;p&gt;Optimization technique that mimics elements of biological evolution (inheritance, crossover, mutation, and natural selection).&lt;/p&gt;
+&lt;p&gt;A genetic algorithm is a technique that mimics elements of biological evolution (inheritance, crossover, mutation, and natural selection) in order to optimize an objective function. Genetic algorithms are particularly useful, because their stochastic underpinnings make them more resiliant to local extrema than other optimization techniques like gradient descent.&lt;/p&gt;
 
-&lt;h3 id=&quot;how-does-it-work&quot;&gt;How does it work?&lt;/h3&gt;
+&lt;h3 id=&quot;example-1-maximization&quot;&gt;Example #1: Maximization&lt;/h3&gt;
+&lt;p&gt;The simplest use of genetic algorithms is in 1-D function optimization, or determining the &lt;em&gt;global&lt;/em&gt; max/min of a function over a specified interval.&lt;/p&gt;
 
-&lt;h3 id=&quot;example-1-function-minimization&quot;&gt;Example 1: Function minimization&lt;/h3&gt;
-
-&lt;h3 id=&quot;example-2-evolutionary-curve-fitting&quot;&gt;Example 2: Evolutionary curve-fitting&lt;/h3&gt;
+&lt;h3 id=&quot;example-2-maze-solving&quot;&gt;Example #2: Maze Solving&lt;/h3&gt;
+&lt;p&gt;Another use of genetic algorithms is in maze solving.&lt;/p&gt;
 
 &lt;h1 id=&quot;mitigating-error&quot;&gt;Mitigating Error&lt;/h1&gt;
 

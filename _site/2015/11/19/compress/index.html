@@ -109,7 +109,7 @@
 <p>Expressions are one-dimensional functions that can be evaluated at various values in a thread-safe manner. Expressions are compositions of simpler operations like addition, multiplication, and sine.</p>
 
 <h2 id="stack-expressions">Stack Expressions</h2>
-<p>Stack expressions are expressions that store their operations in reverse polish notation (RPN). RPN is a type of mathematical notation in which operations appear after their operands. For example, the expression 2+3-4 would be represented in RPN as 23+4-. The benefit of RPN is that expressions can be evaluated in a single pass without regard for order of operations using a single stack.</p>
+<p>Stack expressions are expressions that store their operations in reverse polish notation (RPN). RPN is a type of mathematical notation in which operations appear after their operands. For example, the expression 2+3-4 would be represented in RPN as 23+4-. The benefit of RPN is that expressions can be evaluated in a single pass without regard for order of operations, using a single stack.</p>
 
 <div class="highlight"><pre><code class="language-java" data-lang="java"><span class="lineno"> 1</span> <span class="nd">@Override</span>
 <span class="lineno"> 2</span> <span class="kd">public</span> <span class="n">BigDecimal</span> <span class="nf">eval</span><span class="o">()</span> <span class="kd">throws</span> <span class="n">Exception</span> <span class="o">{</span>
@@ -171,7 +171,7 @@
 <p>Clearly, the stack-based implementation is significantly faster while still using significantly less memory. My system is either too shitty to make use of the parallelized tree evaluation, or the costs of parallelization (increased overhead, etc.) are greater than its benefits.</p>
 
 <h1 id="curve-fitting">Curve Fitting</h1>
-<p>We now have a way to create and evaluate one-dimensional expressions. The next step is to implement curve fitting. Curve fitting attempts to find the curve (expression) that best fits a set of data points. Different curve fitting techniques will fit different kinds of curves; least squares regression fits polynomials and Fourier regression fits sums of sines and cosines. The graph below illustrates linear regression, which locates the line of best fit.</p>
+<p>We now have two ways to create and evaluate one-dimensional expressions. The next step is to implement curve fitting. Curve fitting attempts to find the curve (expression) that best fits a set of data points. Different curve fitting techniques will fit different kinds of curves; least squares regression fits polynomials and Fourier regression fits sums of sines and cosines. The graph below illustrates linear regression, a type of curve fitting that locates the <em>line</em> of best fit.</p>
 
 <p><img align="center" style="margin: 0 auto; display: block;" src="/img/compress-trend.png" /></p>
 
@@ -183,13 +183,13 @@
 <p>As you can probably tell by now, I’m a huge fan of reinventing the wheel. That’s why I decided to write my own genetic algorithm framework from scratch. It’s far from perfect and lacks many of the flashy features of more well established libraries like <a href="http://jgap.sourceforge.net/">JGAP</a> and <a href="http://www.jaga.org/">JAGA</a>, but it is parallelized, extensible, and, most importantly, simple and intuitive.</p>
 
 <h3 id="what-is-a-genetic-algorithm">What is a genetic algorithm?</h3>
-<p>Optimization technique that mimics elements of biological evolution (inheritance, crossover, mutation, and natural selection).</p>
+<p>A genetic algorithm is a technique that mimics elements of biological evolution (inheritance, crossover, mutation, and natural selection) in order to optimize an objective function. Genetic algorithms are particularly useful, because their stochastic underpinnings make them more resiliant to local extrema than other optimization techniques like gradient descent.</p>
 
-<h3 id="how-does-it-work">How does it work?</h3>
+<h3 id="example-1-maximization">Example #1: Maximization</h3>
+<p>The simplest use of genetic algorithms is in 1-D function optimization, or determining the <em>global</em> max/min of a function over a specified interval.</p>
 
-<h3 id="example-1-function-minimization">Example 1: Function minimization</h3>
-
-<h3 id="example-2-evolutionary-curve-fitting">Example 2: Evolutionary curve-fitting</h3>
+<h3 id="example-2-maze-solving">Example #2: Maze Solving</h3>
+<p>Another use of genetic algorithms is in maze solving.</p>
 
 <h1 id="mitigating-error">Mitigating Error</h1>
 

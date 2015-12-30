@@ -239,11 +239,10 @@
 </div>
 
 <h1 id="project-3-image-mosaics">Project 3: Image Mosaics</h1>
-<div>
-<img align="center" style="float: left;  width: 49%" src="/img/cv-b1.jpg" />
-<img align="center" style="float: right; width: 49%" src="/img/cv-b2.jpg" />
-<div style="clear: both;" />
-</div>
+
+<h2 id="transformations-linear-affine-and-projective">Transformations: Linear, Affine, and Projective</h2>
+
+<h2 id="computing-homographies">Computing Homographies</h2>
 
 <div class="highlight"><pre><code class="language-matlab" data-lang="matlab"><span class="k">function</span><span class="w"> </span>[ tform ] <span class="p">=</span><span class="w"> </span><span class="nf">homography</span><span class="p">(</span> x1, y1, x2, y2 <span class="p">)</span><span class="w"></span>
 <span class="c">%HOMOGRAPHY Computes the homography parameters</span>
@@ -262,9 +261,18 @@
     <span class="n">tform</span> <span class="p">=</span> <span class="nb">reshape</span><span class="p">([</span><span class="n">p</span><span class="o">\</span><span class="n">b</span><span class="p">;</span> <span class="mi">1</span><span class="p">],</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span><span class="o">&#39;</span><span class="p">;</span>
 <span class="k">end</span></code></pre></div>
 
+<h2 id="panoramas">Panoramas</h2>
+<div>
+<img align="center" style="float: left;  width: 49%" src="/img/cv-b1.jpg" />
+<img align="center" style="float: right; width: 49%" src="/img/cv-b2.jpg" />
+<div style="clear: both;" />
+</div>
+
 <p><img align="center" style="margin: 0 auto; display: block;" src="/img/cv-b3.png" />
-<img align="center" style="margin: 0 auto; display: block;" src="/img/cv-b4.png" />
-<img align="center" style="margin: 0 auto; display: block;" src="/img/cv-b5.png" /></p>
+<img align="center" style="margin: 0 auto; display: block;" src="/img/cv-b4.png" /></p>
+
+<h2 id="rectification">Rectification</h2>
+<p><img align="center" style="margin: 0 auto; display: block;" src="/img/cv-b5.png" /></p>
 
 <h1 id="project-4-object-detection">Project 4: Object Detection</h1>
 <p><img align="center" style="margin: 0 auto; display: block;" src="/img/cv-c1.png" />
@@ -273,7 +281,18 @@
 <img align="center" style="margin: 0 auto; display: block;" src="/img/cv-c4.png" /></p>
 
 <h1 id="project-5-face-detection">Project 5: Face Detection</h1>
-<p><img align="center" style="margin: 0 auto; display: block;" src="/img/cv-e13.png" /></p>
+<p>In this assignment, we trained a linear support vector machine on histograms of oriented gradients (HoG) features extracted from face datasets in order to perform face detection. Our approach is based on the work of <a href="http://lear.inrialpes.fr/people/triggs/pubs/Dalal-cvpr05.pdf">Dalal and Triggs</a>.</p>
+
+<h2 id="overview-1">Overview</h2>
+
+<h3 id="what-is-a-hog">What is a HoG?</h3>
+
+<h3 id="what-is-a-svm">What is a SVM?</h3>
+
+<h2 id="training-the-linear-svm">Training the Linear SVM</h2>
+<p>Every good machine learning algorithm is built upon good data. We trained our linear classifier on HoG features extracted from faces in the <a href="http://www.vision.caltech.edu/Image_Datasets/Caltech_10K_WebFaces/">Caltech Web Faces Project</a> and non-faces in the Wu et. al and <a href="http://groups.csail.mit.edu/vision/SUN/">SUN Scene</a> datasets using the <a href="http://www.vlfeat.org/">VLFeat Library</a>.</p>
+
+<p>The images below are visualizations of the trained classifier. The image on the left uses a HoG cell size of 6 and the image on the right uses a HoG cell size of 3. Smaller cell sizes provide more descriptive features and increase classifier accuracy, but significantly reduce classifier performance and increase training time.</p>
 
 <div>
 <img align="center" style="float:  left; width: 49%" src="/img/cv-e11.png" />
@@ -281,16 +300,25 @@
 <div style="clear: both" />
 </div>
 
-<p><img align="center" style="margin: 0 auto; display: block;" src="/img/cv-e1.png" />
-<img align="center" style="margin: 0 auto; display: block;" src="/img/cv-e2.png" />
-<img align="center" style="margin: 0 auto; display: block;" src="/img/cv-e3.png" />
-<img align="center" style="margin: 0 auto; display: block;" src="/img/cv-e4.png" />
-<img align="center" style="margin: 0 auto; display: block;" src="/img/cv-e5.png" />
-<img align="center" style="margin: 0 auto; display: block;" src="/img/cv-e6.png" />
-<img align="center" style="margin: 0 auto; display: block;" src="/img/cv-e7.png" />
-<img align="center" style="margin: 0 auto; display: block;" src="/img/cv-e8.png" />
-<img align="center" style="margin: 0 auto; display: block;" src="/img/cv-e9.png" />
-<img align="center" style="margin: 0 auto; display: block;" src="/img/cv-e10.png" /></p>
+<h2 id="results-1">Results</h2>
+<p>The images below show the result of applying the classifier to images of soccer teams. The yellow rectangles  represent actual faces drawn by a human, the green rectangles represent actual faces identified by the classifer (true positives) and the red rectangles represent faces identified by the classifier that are not actually faces (false positives).</p>
+
+<div>
+<img align="center" style="float: left;  width: 49%;" src="/img/cv-e7.png" />
+<img align="center" style="float: right; width: 49%;" src="/img/cv-e8.png" />
+<div style="clear: both;" />
+</div>
+
+<p>The images below show the result of applying the classifier to images of my computer vision class. The image on the left shows the result for regular faces and the image on the right shows the result for occluded faces. Even though people deliberately tried to fool the face detector, my algorithm was still able to detect some of the faces.</p>
+
+<div>
+<img align="center" style="float: left;  width: 49%;" src="/img/cv-e2.png" />
+<img align="center" style="float: right; width: 49%;" src="/img/cv-e4.png" />
+<div style="clear: both;" />
+</div>
+
+<h2 id="benchmarks">Benchmarks</h2>
+<p><img align="center" style="margin: 0 auto; display: block;" src="/img/cv-e10.png" /></p>
 
 <p>Cover photograph by <a href="http://wallpaperswide.com/clear_vision-wallpapers.html">wallpaperswide.com</a>.</p>
 
