@@ -8,9 +8,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="The work and thoughts of a programmer">
 
-    <title>Ashwin Madavan</title>
+    <title>Evolving a PacMan AI - Ashwin Madavan</title>
 
-    <link rel="canonical" href="http://ashwin153.github.io/">
+    <link rel="canonical" href="http://ashwin153.github.io/projects/2015/04/19/pacman/">
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="/css/bootstrap.min.css">
@@ -79,108 +79,69 @@
 </nav>
 
 
-    <!-- Page Header -->
-<header class="intro-header" style="background-image: url('/img/home-bg.jpg')">
+    <!-- Post Header -->
+<header class="intro-header" style="background-image: url('/img/pacman-bg.png')">
     <div class="container">
         <div class="row">
             <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-                <div class="site-heading">
-                    <h1>Ashwin Madavan</h1>
-                    <hr class="small">
-                    <span class="subheading">My corner of the internet</span>
+                <div class="post-heading">
+                    <h1>Evolving a PacMan AI</h1>
+                    
+                    <h2 class="subheading">Reinventing the arcade classic</h2>
+                    
+                    <span class="meta">Posted by Ashwin Madavan on April 19, 2015</span>
                 </div>
             </div>
         </div>
     </div>
 </header>
 
-<!-- Main Content -->
-<div class="container">
-	<div class="row">
-		<div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-			
-<div class="post-preview">
-    <a href="/journal/2016/03/20/math/">
-        <h2 class="post-title">            The Value of Pure Mathematics
-        </h2>
-        
-        <h3 class="post-subtitle">
-            
-        </h3>
-        
-    </a>
-    <p class="post-meta">Posted by Ashwin Madavan on March 20, 2016 to <mark>Journal</mark></p>
-</div>
-<hr>
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
 
-<div class="post-preview">
-    <a href="/journal/2016/03/19/irrational/">
-        <h2 class="post-title">            The Irrationality of Emotions
-        </h2>
-        
-    </a>
-    <p class="post-meta">Posted by Ashwin Madavan on March 19, 2016 to <mark>Journal</mark></p>
-</div>
-<hr>
+				<p>Over the past few months, I have spent a lot of time tinkering with genetic algorithms and neural networks. In previous projects, I have used these genetic algorithms and neural networks to solve simple problems (e.g., function minimization, maze solving, pattern recognition, etc.). However, the more I experimented with these primitives of artificial intelligence, the more I wanted to apply them to larger, more complicated problems. An article I read on <a href="http://kotaku.com/you-can-play-pac-man-on-google-maps-right-now-1694756745">Kotaku</a> inspired me to apply my knowledge of artificial intelligence to recreating PacMan.</p>
 
-<div class="post-preview">
-    <a href="/classes/2015/12/19/cv/">
-        <h2 class="post-title">            Computer Vision (CS 378H)
-        </h2>
-        
-        <h3 class="post-subtitle">
-            WIP: An introduction to vision and learning techniques
-        </h3>
-        
-    </a>
-    <p class="post-meta">Posted by Ashwin Madavan on December 19, 2015 to <mark>Classes</mark></p>
-</div>
-<hr>
+<p>The complete source code, technical report, and documentation is available on <a href="https://github.com/ashwin153/pacman">GitHub</a>.</p>
 
-<div class="post-preview">
-    <a href="/classes/2015/12/11/os/">
-        <h2 class="post-title">            Operating Systems (CS 439H)
-        </h2>
-        
-        <h3 class="post-subtitle">
-            WIP: Abstraction, resource management, and frustration
-        </h3>
-        
-    </a>
-    <p class="post-meta">Posted by Ashwin Madavan on December 11, 2015 to <mark>Classes</mark></p>
-</div>
-<hr>
+<h1 id="gameplay">Gameplay</h1>
+<p>I could not find an open source implementation of PacMan in Java, so I decided to write my own version. Using the <a href="http://home.comcast.net/~jpittman2/pacman/pacmandossier.html">Pacman Dossier</a> as a reference, I built PacMan from scratch. I used GIMP 2.8 to design the sprites and background, and used Swing to display the GUI. The picture below depicts the completed interface.</p>
 
-<div class="post-preview">
-    <a href="/projects/2015/11/19/compress/">
-        <h2 class="post-title">            Compression
-        </h2>
-        
-        <h3 class="post-subtitle">
-            WIP: Bigger isn't always better
-        </h3>
-        
-    </a>
-    <p class="post-meta">Posted by Ashwin Madavan on November 19, 2015 to <mark>Projects</mark></p>
-</div>
-<hr>
+<p><img src="/img/pacman-game.png" alt="Game" title="My PacMan Game" /></p>
+
+<h1 id="artificial-intelligence">Artificial Intelligence</h1>
+<p>I created a feed-forward neural network and taught it to play PacMan using a binary genetic algorithm. This network accepts twelve different inputs: (1) the distances from each of the ghosts to PacMan, (2) whether or not each of the ghosts is moving toward PacMan, (3) the mode that each of the ghosts are in, (4) the location (x, y) of the closest “food” tile, and (5) the location (x, y) of the closest “energizer” tile. The network outputs four values, each of which is in the range [0.0, 1.0]. Each output corresponds to a different orientation (up, down, left, right). Each time PacMan needs to make a decision about which direction to move in, it selects the orientation with the highest output.</p>
+
+<p><img align="left" style="PADDING-RIGHT: 15px" src="https://raw.githubusercontent.com/ashwin153/ashwin153.github.io/master/img/pacman-ai.gif" /></p>
+
+<p>The weights of the neural network were determined by a genetic algorithm. The genetic algorithm quickly played an entire game using a particular set of weights and determined the “fitness” of these weights by calculating 1.0 / (elapsedTime + score). Over many generations, the genetic algorithm determined the optimal set of weights by minimizing this fitness function.</p>
+
+<p>The trained neural network worked surprisingly well. It was able to last for 22 seconds and earned 1740 points! In comparison, an untrained neural network with randomly generated weights earned an average of 86.4 points over 5 trials. Therefore, the training process increased performance by over 2013%!</p>
+
+<p>Cover photograph by <a href="http://ww2.glance.net/wp-content/uploads/2015/01/salesforce_blog_image.jpg">Ivan Brooker</a>.</p>
 
 
-<!-- Pager -->
+                <hr>
 
-<ul class="pager">
-    
-    
-    <li class="next">
-        <a href="/page2">Older Posts &rarr;</a>
-    </li>
-    
-</ul>
+                <ul class="pager">
+                    
+                    <li class="previous">
+                        <a href="/projects/2014/11/06/music/" data-toggle="tooltip" data-placement="top" title="Music Generation Using Markov Chains">&larr; Previous Post</a>
+                    </li>
+                    
+                    
+                    <li class="next">
+                        <a href="/projects/2015/05/16/stocks/" data-toggle="tooltip" data-placement="top" title="Automated DCF Analysis">Next Post &rarr;</a>
+                    </li>
+                    
+                </ul>
 
-
-		</div>
-	</div>
-</div>
+            </div>
+        </div>
+    </div>
+</article>
 
 <hr>
 

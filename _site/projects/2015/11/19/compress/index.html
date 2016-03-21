@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="The work and thoughts of a programmer">
+
+    <title>Compression - Ashwin Madavan</title>
+
+    <link rel="canonical" href="http://ashwin153.github.io/projects/2015/11/19/compress/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/clean-blog.css">
+
+    <!-- Pygments Github CSS -->
+    <link rel="stylesheet" href="/css/syntax.css">
+
+    <!-- Custom Fonts -->
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href='//fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
+
+	<script type="text/javascript"
+		src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+	</script>
+    
+	<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+
+
+<body>
+
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Ashwin Madavan</a>
+       </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <a href="/">Home</a>
+                </li>
+                
+                <li>
+                    <a href="/about/">About</a>
+                </li>
+                
+                <li>
+                    <a href="/contact/">Contact</a>
+                </li>
+                
+            </ul>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+
+
+    <!-- Post Header -->
+<header class="intro-header" style="background-image: url('/img/compress-bg.png')">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <h1>Compression</h1>
+                    
+                    <h2 class="subheading">WIP: Bigger isn't always better</h2>
+                    
+                    <span class="meta">Posted by Ashwin Madavan on November 19, 2015</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+
+				<h1 id="introduction">Introduction</h1>
+<p>My compression algorithm uses curve fitting to model the bytes in a file as a <strong>function</strong> of their position in the file.</p>
+
+<h1 id="expressions">Expressions</h1>
+<p>Expressions are one-dimensional functions that can be evaluated at various values in a thread-safe manner. Expressions are compositions of simpler operations like addition, multiplication, and sine.</p>
+
+<h2 id="stack-expressions">Stack Expressions</h2>
+<p>Stack expressions are expressions that store their operations in reverse polish notation (RPN). RPN is a type of mathematical notation in which operations appear after their operands. For example, the expression 2+3-4 would be represented in RPN as 23+4-. The benefit of RPN is that expressions can be evaluated in a single pass without regard for order of operations, using a single stack.</p>
+
+<div class="highlight"><pre><code class="language-java" data-lang="java"><span class="lineno"> 1</span> <span class="nd">@Override</span>
+<span class="lineno"> 2</span> <span class="kd">public</span> <span class="n">BigDecimal</span> <span class="nf">eval</span><span class="o">()</span> <span class="kd">throws</span> <span class="n">Exception</span> <span class="o">{</span>
+<span class="lineno"> 3</span> 	<span class="n">Stack</span><span class="o">&lt;</span><span class="n">BigDecimal</span><span class="o">&gt;</span> <span class="n">stack</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Stack</span><span class="o">&lt;</span><span class="n">BigDecimal</span><span class="o">&gt;();</span>
+<span class="lineno"> 4</span> 	<span class="k">for</span><span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">_operations</span><span class="o">.</span><span class="na">size</span><span class="o">();</span> <span class="n">i</span><span class="o">++)</span> <span class="o">{</span>
+<span class="lineno"> 5</span> 		<span class="n">BigDecimal</span><span class="o">[]</span> <span class="n">operands</span> <span class="o">=</span> <span class="k">new</span> <span class="n">BigDecimal</span><span class="o">[</span><span class="n">_operations</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">i</span><span class="o">).</span><span class="na">arity</span><span class="o">()];</span>
+<span class="lineno"> 6</span> 		<span class="k">for</span><span class="o">(</span><span class="kt">int</span> <span class="n">j</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="n">operands</span><span class="o">.</span><span class="na">length</span><span class="o">;</span> <span class="n">j</span><span class="o">++)</span>
+<span class="lineno"> 7</span> 			<span class="n">operands</span><span class="o">[</span><span class="n">j</span><span class="o">]</span> <span class="o">=</span> <span class="n">stack</span><span class="o">.</span><span class="na">pop</span><span class="o">();</span>
+<span class="lineno"> 8</span> 		<span class="n">stack</span><span class="o">.</span><span class="na">push</span><span class="o">(</span><span class="n">_operations</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">i</span><span class="o">).</span><span class="na">eval</span><span class="o">(</span><span class="n">operands</span><span class="o">));</span>
+<span class="lineno"> 9</span> 	<span class="o">}</span>
+<span class="lineno">10</span> 		
+<span class="lineno">11</span> 	<span class="k">if</span><span class="o">(</span><span class="n">stack</span><span class="o">.</span><span class="na">size</span><span class="o">()</span> <span class="o">!=</span> <span class="mi">1</span><span class="o">)</span> 
+<span class="lineno">12</span> 		<span class="k">throw</span> <span class="k">new</span> <span class="nf">IllegalArgumentException</span><span class="o">(</span><span class="s">&quot;Invalid stack expression&quot;</span><span class="o">);</span>
+<span class="lineno">13</span> 	<span class="k">return</span> <span class="n">stack</span><span class="o">.</span><span class="na">pop</span><span class="o">();</span>
+<span class="lineno">14</span> <span class="o">}</span></code></pre></div>
+
+<h2 id="tree-expressions">Tree Expressions</h2>
+<p>Tree expressions are expressions that store their operations in a tree. Each node of the expression tree represents an operation, whose inputs are the outputs of its child nodes. The image below shows the corresponding expression tree for the expression (4+3*7)-(5/(3+4))+6.</p>
+
+<p><img align="center" style="margin: 0 auto; display: block;" src="/img/compress-tree.jpg" /></p>
+
+<p>The most important benefit of tree expressions is that evaluation is easily parallelized; the children of any particular node can be evaluated independently. The code below parallelizes the evaluation of each node in the tree.</p>
+
+<div class="highlight"><pre><code class="language-java" data-lang="java"><span class="lineno"> 1</span> <span class="kd">public</span> <span class="n">BigDecimal</span> <span class="nf">eval</span><span class="o">(</span><span class="kd">final</span> <span class="n">ExecutorService</span> <span class="n">executor</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">Exception</span> <span class="o">{</span>
+<span class="lineno"> 2</span> 	<span class="c1">// Evaluates the node in parallel; we can do this because each child</span>
+<span class="lineno"> 3</span> 	<span class="c1">// can be evaluated independently. This should lead to a huge</span>
+<span class="lineno"> 4</span> 	<span class="c1">// performance boost of tree expression evaluation.</span>
+<span class="lineno"> 5</span> 	<span class="n">List</span><span class="o">&lt;</span><span class="n">Future</span><span class="o">&lt;</span><span class="n">BigDecimal</span><span class="o">&gt;&gt;</span> <span class="n">tasks</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ArrayList</span><span class="o">&lt;</span><span class="n">Future</span><span class="o">&lt;</span><span class="n">BigDecimal</span><span class="o">&gt;&gt;();</span>
+<span class="lineno"> 6</span> 	<span class="k">for</span><span class="o">(</span><span class="kd">final</span> <span class="n">Node</span> <span class="n">child</span> <span class="o">:</span> <span class="n">_children</span><span class="o">)</span> <span class="o">{</span>
+<span class="lineno"> 7</span> 		<span class="n">tasks</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">executor</span><span class="o">.</span><span class="na">submit</span><span class="o">(</span><span class="k">new</span> <span class="n">Callable</span><span class="o">&lt;</span><span class="n">BigDecimal</span><span class="o">&gt;()</span> <span class="o">{</span>
+<span class="lineno"> 8</span> 			<span class="nd">@Override</span>
+<span class="lineno"> 9</span> 			<span class="kd">public</span> <span class="n">BigDecimal</span> <span class="nf">call</span><span class="o">()</span> <span class="kd">throws</span> <span class="n">Exception</span> <span class="o">{</span>
+<span class="lineno">10</span> 				<span class="k">return</span> <span class="n">child</span><span class="o">.</span><span class="na">eval</span><span class="o">(</span><span class="n">executor</span><span class="o">);</span>
+<span class="lineno">11</span> 			<span class="o">}</span>
+<span class="lineno">12</span> 		<span class="o">}));</span>
+<span class="lineno">13</span> 	<span class="o">}</span>
+<span class="lineno">14</span> 			
+<span class="lineno">15</span> 	<span class="c1">// Retrieve the value of the future tasks and perform the operation</span>
+<span class="lineno">16</span> 	<span class="n">BigDecimal</span><span class="o">[]</span> <span class="n">inputs</span> <span class="o">=</span> <span class="k">new</span> <span class="n">BigDecimal</span><span class="o">[</span><span class="n">_operation</span><span class="o">.</span><span class="na">arity</span><span class="o">()];</span>
+<span class="lineno">17</span> 	<span class="k">for</span><span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">inputs</span><span class="o">.</span><span class="na">length</span><span class="o">;</span> <span class="n">i</span><span class="o">++)</span>
+<span class="lineno">18</span> 		<span class="n">inputs</span><span class="o">[</span><span class="n">i</span><span class="o">]</span> <span class="o">=</span> <span class="n">tasks</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">i</span><span class="o">).</span><span class="na">get</span><span class="o">();</span>
+<span class="lineno">19</span> 	<span class="k">return</span> <span class="n">_operation</span><span class="o">.</span><span class="na">eval</span><span class="o">(</span><span class="n">inputs</span><span class="o">);</span>
+<span class="lineno">20</span> <span class="o">}</span></code></pre></div>
+
+<p>Another benefit of tree expressions is that they can be easily manipulated and modified by simply changing nodes in the tree. The drawbacks with tree expressions include larger memory usage.</p>
+
+<h2 id="verifying-thread-safety">Verifying Thread Safety</h2>
+<p>One of my biggest challenges was verifying that my implementation was thread-safe. The problem with testing for race conditions is that failures are non-deterministic. To eliminate the non-determinism I used a library called <a href="http://www.cs.umd.edu/~ayewah/projects/multithreadedtc/introduction.html">MultithreadedTC</a> which “features a metronome that is used to provide fine control over the sequence of activities in multiple threads”; in other words, MultithreadedTC is able to detect race conditions in a deterministic manner.</p>
+
+<h2 id="benchmarks">Benchmarks</h2>
+<p>To determine which expression implementation was <em>better</em>, I used <a href="https://github.com/google/caliper">Google Caliper</a> to benchmark their memory and runtime costs.</p>
+
+<div>
+<img align="center" style="float:  left; width: 49%;" src="/img/compress-balloc.png" />
+<img align="center" style="float: right; width: 49%;" src="/img/compress-bruntime.png" />
+<div style="clear: both;" />
+</div>
+
+<p>Clearly, the stack-based implementation is significantly faster while still using significantly less memory. My system is either too shitty to make use of the parallelized tree evaluation, or the costs of parallelization (increased overhead, etc.) are greater than its benefits.</p>
+
+<h1 id="curve-fitting">Curve Fitting</h1>
+<p>We now have two ways to create and evaluate one-dimensional expressions. The next step is to implement curve fitting. Curve fitting attempts to find the curve (expression) that best fits a set of data points. Different curve fitting techniques will fit different kinds of curves; least squares regression fits polynomials and Fourier regression fits sums of sines and cosines. The graph below illustrates linear regression, a type of curve fitting that locates the <em>line</em> of best fit.</p>
+
+<p><img align="center" style="margin: 0 auto; display: block;" src="/img/compress-trend.png" /></p>
+
+<h2 id="least-squares-regression">Least Squares Regression</h2>
+
+<h2 id="discrete-fourier-regression">Discrete Fourier Regression</h2>
+
+<h2 id="genetic-regression">Genetic Regression</h2>
+<p>As you can probably tell by now, I’m a huge fan of reinventing the wheel. That’s why I decided to write my own genetic algorithm framework from scratch. It’s far from perfect and lacks many of the flashy features of more well established libraries like <a href="http://jgap.sourceforge.net/">JGAP</a> and <a href="http://www.jaga.org/">JAGA</a>, but it is parallelized, extensible, and, most importantly, simple and intuitive.</p>
+
+<h3 id="what-is-a-genetic-algorithm">What is a genetic algorithm?</h3>
+<p>A genetic algorithm is a technique that mimics elements of biological evolution (inheritance, crossover, mutation, and natural selection) in order to optimize an objective function. Genetic algorithms are particularly useful, because their stochastic underpinnings make them more resiliant to local extrema than other optimization techniques like gradient descent.</p>
+
+<h3 id="example-1-maximization">Example #1: Maximization</h3>
+<p>The simplest use of genetic algorithms is in 1-D function optimization, or determining the <em>global</em> max/min of a function over a specified interval.</p>
+
+<h3 id="example-2-maze-solving">Example #2: Maze Solving</h3>
+<p>Another use of genetic algorithms is in maze solving.</p>
+
+<h1 id="mitigating-error">Mitigating Error</h1>
+
+<h2 id="modified-chunking-algorithm">Modified Chunking Algorithm</h2>
+
+<h2 id="genetic-bit-weight-optimizer">Genetic Bit Weight Optimizer</h2>
+
+<h1 id="encoding-and-decoding">Encoding and Decoding</h1>
+
+<h2 id="java-serialization">Java Serialization</h2>
+
+<h2 id="kryo-serialization">Kryo Serialization</h2>
+
+<h2 id="custom-serialization">Custom Serialization</h2>
+
+<h1 id="results">Results</h1>
+
+<p>Cover photograph by <a href="http://www.data.gov.bc.ca/local/dbc/images/feature/img_bg_slider2.png">data.gov.bc.ca</a>.</p>
+
+
+                <hr>
+
+                <ul class="pager">
+                    
+                    <li class="previous">
+                        <a href="/projects/2015/10/19/vix/" data-toggle="tooltip" data-placement="top" title="VIX Futures Roll">&larr; Previous Post</a>
+                    </li>
+                    
+                    
+                    <li class="next">
+                        <a href="/classes/2015/12/11/os/" data-toggle="tooltip" data-placement="top" title="Operating Systems (CS 439H)">Next Post &rarr;</a>
+                    </li>
+                    
+                </ul>
+
+            </div>
+        </div>
+    </div>
+</article>
+
+<hr>
+
+
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                    <li>
+                        <a href="/feed.xml">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-rss fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                    
+                    
+                    <li>
+                        <a href="https://www.facebook.com/ashwin.madavan">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-facebook fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                    
+                    
+                    <li>
+                        <a href="https://github.com/ashwin153">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                    
+                </ul>
+                <p class="copyright text-muted">Copyright &copy; Ashwin Madavan 2016</p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js "></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js "></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/clean-blog.min.js "></script>
+
+
+</body>
+
+</html>

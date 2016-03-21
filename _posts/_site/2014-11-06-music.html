@@ -1,0 +1,53 @@
+<p>Markov chains are “random processes that undergo transitions from one state to another on a given state space.” (Wikipedia). Markov chains must be “memoryless”; in other words, the probability distribution of their next state only depends on their current state and not on the states that preceded it. I developed a Java implementation of a Markov Chain using a hash map that associates states with a list of possible next states. States that are more likely to occur after a given state appear more frequently in the list of next states.</p>
+
+<p>The full code and documentation is available on <a href="https://github.com/ashwin153/cs-314h/tree/master/assignments/prog2">Github</a>.</p>
+
+<h1 id="random-writing">Random Writing</h1>
+<p>In the case of text, “states” are unique character strings of length k and “next states” are the list of character strings that immediately follow them. For example, if the input text is “mississippi” and k is 2, then the set of states is {“mi”, “is”, “ss”, “si”, “ip”, “pp”, “pi”}. The possible next states for the state “si” are “is” and “ip”.</p>
+
+<p>Generation of randomized text is fairly simple once the hash map has been created. First, an initial seed state is randomly selected. Then, one of its possible next states is chosen and the last character of this randomly selected state is outputed. The procedure repeats using this randomly selected state as the new seed until an output of sufficient size is generated.</p>
+
+<h1 id="random-music">Random Music</h1>
+<p>I adapted my text-based implementation of Markov Chains to handle musical MIDI files as well. MIDI files contain information about each note played by each instrument in a musical piece. In the case of music, events are represented as all the notes played by all the instruments over k timesteps (length of timestep varies from song to song). The program consumes the input file and uses it to generate a completely new song. This new song will share many of the same chord progressions and note patterns, but it is randomized and original. One of the most challenging aspects of this project was ensuring that the music stayed on beat. To do this, I added small (almost) inaudible silences between notes that shift the beat over slightly and ensure the song stays on meter.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: left">Artist</th>
+      <th style="text-align: left">Song</th>
+      <th style="text-align: center">k</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: left">Skrillex</td>
+      <td style="text-align: left"><a href="http://goo.gl/8B8fHu">Scary Monsters</a></td>
+      <td style="text-align: center">1</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">Skrillex</td>
+      <td style="text-align: left"><a href="http://goo.gl/TrIy5m">Scary Monsters</a></td>
+      <td style="text-align: center">4</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">Skrillex</td>
+      <td style="text-align: left"><a href="http://goo.gl/GpYXAf">Scary Monsters</a></td>
+      <td style="text-align: center">8</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">Led Zeppelin</td>
+      <td style="text-align: left"><a href="http://goo.gl/n627J1">Stairway to Heaven</a></td>
+      <td style="text-align: center">8</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">Train</td>
+      <td style="text-align: left"><a href="http://goo.gl/74D1Up">Hey Soul Sister</a></td>
+      <td style="text-align: center">8</td>
+    </tr>
+  </tbody>
+</table>
+
+<h1 id="future-work-random-images">Future Work: Random Images</h1>
+<p>Another application of Markov Chains is in image reconstruction. By using the probability distribution of the colors of different pixels, it is possible to reconstruct images while maintaining its original artistic style.</p>
+
+<p>Cover photograph from <a href="http://blog.funeralone.com/funeralone-products/life-tributes/funeral-songs/">Funer Alone</a></p>

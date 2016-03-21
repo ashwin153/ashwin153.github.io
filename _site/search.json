@@ -1,0 +1,75 @@
+[
+  
+    {
+      "title"    : "The Value of Pure Mathematics",
+      "category" : "Journal",
+      "tags"     : "",
+      "url"      : "/journal/2016/03/20/math/",
+      "date"     : "2016-03-20 23:20:00 -0500"
+    } ,
+  
+    {
+      "title"    : "The Irrationality of Emotions",
+      "category" : "Journal",
+      "tags"     : "",
+      "url"      : "/journal/2016/03/19/irrational/",
+      "date"     : "2016-03-19 23:20:00 -0500"
+    } ,
+  
+    {
+      "title"    : "Computer Vision (CS 378H)",
+      "category" : "Classes",
+      "tags"     : "",
+      "url"      : "/classes/2015/12/19/cv/",
+      "date"     : "2015-12-19 22:20:00 -0600"
+    } ,
+  
+    {
+      "title"    : "Operating Systems (CS 439H)",
+      "category" : "Classes",
+      "tags"     : "",
+      "url"      : "/classes/2015/12/11/os/",
+      "date"     : "2015-12-11 22:20:00 -0600"
+    } ,
+  
+    {
+      "title"    : "Compression",
+      "category" : "Projects",
+      "tags"     : "",
+      "url"      : "/projects/2015/11/19/compress/",
+      "date"     : "2015-11-19 22:20:00 -0600"
+    } ,
+  
+    {
+      "title"    : "VIX Futures Roll",
+      "category" : "Projects",
+      "tags"     : "",
+      "url"      : "/projects/2015/10/19/vix/",
+      "date"     : "2015-10-19 23:20:00 -0500"
+    } ,
+  
+    {
+      "title"    : "Automated DCF Analysis",
+      "category" : "Projects",
+      "tags"     : "",
+      "url"      : "/projects/2015/05/16/stocks/",
+      "date"     : "2015-05-16 00:16:00 -0500"
+    } ,
+  
+    {
+      "title"    : "Evolving a PacMan AI",
+      "category" : "Projects",
+      "tags"     : "",
+      "url"      : "/projects/2015/04/19/pacman/",
+      "date"     : "2015-04-19 23:20:00 -0500"
+    } ,
+  
+    {
+      "title"    : "Music Generation Using Markov Chains",
+      "category" : "Projects",
+      "tags"     : "",
+      "url"      : "/projects/2014/11/06/music/",
+      "date"     : "2014-11-06 05:20:00 -0600"
+    } 
+  
+]

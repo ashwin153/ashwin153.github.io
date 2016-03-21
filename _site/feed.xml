@@ -5,12 +5,46 @@
     <description>The work and thoughts of a programmer</description>
     <link>http://ashwin153.github.io/</link>
     <atom:link href="http://ashwin153.github.io/feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Tue, 29 Dec 2015 23:52:20 -0800</pubDate>
-    <lastBuildDate>Tue, 29 Dec 2015 23:52:20 -0800</lastBuildDate>
+    <pubDate>Mon, 21 Mar 2016 17:56:59 -0500</pubDate>
+    <lastBuildDate>Mon, 21 Mar 2016 17:56:59 -0500</lastBuildDate>
     <generator>Jekyll v2.5.3</generator>
     
       <item>
-        <title>CS 378H: Computer Vision</title>
+        <title>The Value of Pure Mathematics</title>
+        <description>&lt;p&gt;I’m often asked about the value in studying pure mathematics. I’ll admit that the study of topological spaces and abstract algebraic structures may seem at first glance to be a pointless theoretical exercise. However, the real value of pure mathematics lies not in its practical applications, which - while not obvious - are countless, but in the problem solving techniques and the logical argumentation it forces its students to learn. A rigorous study of any branch of pure mathematics begins with a set of axioms that describe the behavior of some mathematical objects and builds up a set of interesting results that follow as logical consequences of these simple axioms. This process of proving complicated properties of mathematical objects using simpler properties and basic axioms teaches you to &lt;strong&gt;repose new problems is terms of previous results.&lt;/strong&gt; The ability to reframe a problem into a familiar context is an invaluable skill for understanding new ideas both in pure mathematics and in the real world.&lt;/p&gt;
+
+&lt;p&gt;Cover photograph by &lt;a href=&quot;http://www.cashsmarter.com/wp-content/uploads/2015/11/maths-ftr.jpg&quot;&gt;Cash Smarter&lt;/a&gt;&lt;/p&gt;
+</description>
+        <pubDate>Sun, 20 Mar 2016 23:20:00 -0500</pubDate>
+        <link>http://ashwin153.github.io/journal/2016/03/20/math/</link>
+        <guid isPermaLink="true">http://ashwin153.github.io/journal/2016/03/20/math/</guid>
+        
+        
+        <category>journal</category>
+        
+      </item>
+    
+      <item>
+        <title>The Irrationality of Emotions</title>
+        <description>&lt;h1 id=&quot;the-brain-is-irrational&quot;&gt;The Brain is Irrational&lt;/h1&gt;
+&lt;p&gt;Consider a situation in which a thirsty husband is furious that his wife has once again finished all of their milk. When the situation is examined in isolation, the husband’s anger seems irrational. It’s just a carton of milk! When the situation is viewed in the broader scope of their relationship; however, the husband’s anger might seem more justified. Maybe he has told her on numerous occasions to replace the empty carton in the refrigerator. This situation illustrates a larger point: our ability to rationalize our emotions increases as we broaden the scope of our investigation. Therefore, the only way to fully rationalize our emotions is to view them in the broadest possible context which is the set of all relevant previous actions taken by every individual. Because our brain has finite capacity and its choice of measure of relevance is arbitrary, &lt;strong&gt;we must accept that our actions will always have some degree of unexplainable irrationality.&lt;/strong&gt;&lt;/p&gt;
+
+&lt;h1 id=&quot;the-irrational-neural-network&quot;&gt;The Irrational Neural Network&lt;/h1&gt;
+&lt;p&gt;There is no better machine learning algorithm than the human brain. We can think of the brain as a neural network whose inputs are present sensory readings (sight, smell, etc.) and the actions taken after similar past sensory readings (memories) and whose output is the action taken in the present. The human brain has finite capacity, so it chooses to retain memories based on temporal proximity and potential for future use. In summary, we can digitally mimic the irrational human brain by constructing a neural network whose outputs are informed by its current inputs and its memory of its outputs during similar past input conditions. The irrationality of this neural network stems from its finite memory capacity and its arbitrary choice of measure of input similarity.&lt;/p&gt;
+
+&lt;p&gt;Cover photograph from &lt;a href=&quot;http://6iee.com/data/uploads/36/504080.jpg&quot;&gt;6iee&lt;/a&gt;.&lt;/p&gt;
+</description>
+        <pubDate>Sat, 19 Mar 2016 23:20:00 -0500</pubDate>
+        <link>http://ashwin153.github.io/journal/2016/03/19/irrational/</link>
+        <guid isPermaLink="true">http://ashwin153.github.io/journal/2016/03/19/irrational/</guid>
+        
+        
+        <category>journal</category>
+        
+      </item>
+    
+      <item>
+        <title>Computer Vision (CS 378H)</title>
         <description>&lt;h1 id=&quot;project-1-circle-detection&quot;&gt;Project 1: Circle Detection&lt;/h1&gt;
 &lt;p&gt;In this assignment, we developed an algorithm that uses Hough Transforms to detect circles of arbitrary radii within arbitrary images.&lt;/p&gt;
 
@@ -231,15 +265,17 @@
 
 &lt;p&gt;Cover photograph by &lt;a href=&quot;http://wallpaperswide.com/clear_vision-wallpapers.html&quot;&gt;wallpaperswide.com&lt;/a&gt;.&lt;/p&gt;
 </description>
-        <pubDate>Sat, 19 Dec 2015 20:20:00 -0800</pubDate>
-        <link>http://ashwin153.github.io/2015/12/19/cv/</link>
-        <guid isPermaLink="true">http://ashwin153.github.io/2015/12/19/cv/</guid>
+        <pubDate>Sat, 19 Dec 2015 22:20:00 -0600</pubDate>
+        <link>http://ashwin153.github.io/classes/2015/12/19/cv/</link>
+        <guid isPermaLink="true">http://ashwin153.github.io/classes/2015/12/19/cv/</guid>
         
+        
+        <category>classes</category>
         
       </item>
     
       <item>
-        <title>CS 439H: Operating Systems</title>
+        <title>Operating Systems (CS 439H)</title>
         <description>&lt;p&gt;What is an operating system? Operating systems are such sprawling pieces of software that most programmers interact with them without even realizing it. Operating systems serve two purposes: managing system resources and abstracting computer hardware. Their responsibilities include facilitating multi-tasking, managing memory and disk, and providing a simple interface to application programmers for interacting with hardware and system resources.&lt;/p&gt;
 
 &lt;p&gt;In this class, we built a (shitty) operating system from scratch. Beginning from just a master boot record, we designed a system capable of executing multiple c programs concurrently, complete with its own file system, system call interface, shell, and automatic reference counter. Not too bad for one semester!&lt;/p&gt;
@@ -274,7 +310,7 @@
 &lt;h1 id=&quot;project-2-preemptive-threading-and-memory-heap&quot;&gt;Project 2: Preemptive Threading and Memory Heap&lt;/h1&gt;
 &lt;p&gt;Cooperative multitasking is a good solution if user programs are guaranteed to work together. In reality, it is unlikely that user programs will multiplex system resources efficiently and improbable that all user programs will be cooperative. Therefore, modern operating systems also implement preemptive multitasking. A preemptively multitasking system interrupts user programs at regular intervals, to ensure that all processes are given a chance to run.&lt;/p&gt;
 
-&lt;p&gt;To implement preemptive threading, we make use of interrupts, the interrupt descriptor table (IDT), and the programmable interval timer (PIT). Interrupts are triggered by hardware or software to inform the processor of some event that requires attention. The processor stops what it is doing, saves its current state, locates the interrupt handler (a function) associated with the interrupt in the IDT, executes the handler, and then resumes what it was working on previously. The PIT is programmed to regularly trigger an interrupt whose interrupt handler forces the processor to perform a context switch.&lt;/p&gt;
+&lt;p&gt;To implement preemptive threading, we make use of interrupts, the interrupt descriptor table (IDT), and the programmable interval timer (PIT). Interrupts are triggered by hardware or software to inform the processor of some event that requires immediate attention. The processor stops what it is doing, saves its current state, locates the interrupt handler (a function) associated with the interrupt in the IDT, executes the handler, and then resumes what it was working on previously. The PIT is programmed to regularly trigger an interrupt whose interrupt handler forces the processor to perform a context switch.&lt;/p&gt;
 
 &lt;p&gt;At this point, we have a system capable of interleaving program execution. However, this system has no mechanism for preventing programs from overwriting each other’s memory and for reallocating memory. A simple solution to the first problem is a naive heap consisting of a single pointer. Each time a request to allocate memory (malloc) comes in, the naive heap returns the pointer and increments it by the number of requested bytes. However, this implementation does not solve the second problem; once a memory address has been allocated, there is no way for that address to be reused for any other purpose. Therefore, a good heap must also keep track of available blocks of memory so that blocks can be reallocated once they are no longer in use.&lt;/p&gt;
 
@@ -792,10 +828,12 @@
 
 &lt;p&gt;Cover photograph by &lt;a href=&quot;http://9to5mac.com/2014/08/18/here-are-all-of-os-x-yosemites-beautiful-new-wallpapers/#jp-carousel-336329&quot;&gt;9to5mac.com&lt;/a&gt;.&lt;/p&gt;
 </description>
-        <pubDate>Fri, 11 Dec 2015 20:20:00 -0800</pubDate>
-        <link>http://ashwin153.github.io/2015/12/11/os/</link>
-        <guid isPermaLink="true">http://ashwin153.github.io/2015/12/11/os/</guid>
+        <pubDate>Fri, 11 Dec 2015 22:20:00 -0600</pubDate>
+        <link>http://ashwin153.github.io/classes/2015/12/11/os/</link>
+        <guid isPermaLink="true">http://ashwin153.github.io/classes/2015/12/11/os/</guid>
         
+        
+        <category>classes</category>
         
       </item>
     
@@ -826,7 +864,7 @@
 &lt;span class=&quot;lineno&quot;&gt;14&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;h2 id=&quot;tree-expressions&quot;&gt;Tree Expressions&lt;/h2&gt;
-&lt;p&gt;Tree expressions are expressions that store their operations in an expression tree. Each node of the expression tree represents an operation, whose inputs are the outputs of its child nodes. The image below shows the corresponding expression tree for the expression (4+3*7)-(5/(3+4))+6.&lt;/p&gt;
+&lt;p&gt;Tree expressions are expressions that store their operations in a tree. Each node of the expression tree represents an operation, whose inputs are the outputs of its child nodes. The image below shows the corresponding expression tree for the expression (4+3*7)-(5/(3+4))+6.&lt;/p&gt;
 
 &lt;p&gt;&lt;img align=&quot;center&quot; style=&quot;margin: 0 auto; display: block;&quot; src=&quot;/img/compress-tree.jpg&quot; /&gt;&lt;/p&gt;
 
@@ -908,10 +946,12 @@
 
 &lt;p&gt;Cover photograph by &lt;a href=&quot;http://www.data.gov.bc.ca/local/dbc/images/feature/img_bg_slider2.png&quot;&gt;data.gov.bc.ca&lt;/a&gt;.&lt;/p&gt;
 </description>
-        <pubDate>Thu, 19 Nov 2015 20:20:00 -0800</pubDate>
-        <link>http://ashwin153.github.io/2015/11/19/compress/</link>
-        <guid isPermaLink="true">http://ashwin153.github.io/2015/11/19/compress/</guid>
+        <pubDate>Thu, 19 Nov 2015 22:20:00 -0600</pubDate>
+        <link>http://ashwin153.github.io/projects/2015/11/19/compress/</link>
+        <guid isPermaLink="true">http://ashwin153.github.io/projects/2015/11/19/compress/</guid>
         
+        
+        <category>projects</category>
         
       </item>
     
@@ -1003,10 +1043,12 @@
 
 &lt;p&gt;Cover photograph by &lt;a href=&quot;http://www.stockideas.org/wp-content/uploads/2014/01/stocks-ranked-by-volatility.jpg&quot;&gt;stockideas.org&lt;/a&gt;.&lt;/p&gt;
 </description>
-        <pubDate>Mon, 19 Oct 2015 21:20:00 -0700</pubDate>
-        <link>http://ashwin153.github.io/2015/10/19/vix/</link>
-        <guid isPermaLink="true">http://ashwin153.github.io/2015/10/19/vix/</guid>
+        <pubDate>Mon, 19 Oct 2015 23:20:00 -0500</pubDate>
+        <link>http://ashwin153.github.io/projects/2015/10/19/vix/</link>
+        <guid isPermaLink="true">http://ashwin153.github.io/projects/2015/10/19/vix/</guid>
         
+        
+        <category>projects</category>
         
       </item>
     
@@ -1088,10 +1130,12 @@
 
 &lt;p&gt;Cover photograph from &lt;a href=&quot;http://www.nepseforum.com/&quot;&gt;Nepse Forum&lt;/a&gt;.&lt;/p&gt;
 </description>
-        <pubDate>Fri, 15 May 2015 22:16:00 -0700</pubDate>
-        <link>http://ashwin153.github.io/2015/05/15/stocks/</link>
-        <guid isPermaLink="true">http://ashwin153.github.io/2015/05/15/stocks/</guid>
+        <pubDate>Sat, 16 May 2015 00:16:00 -0500</pubDate>
+        <link>http://ashwin153.github.io/projects/2015/05/16/stocks/</link>
+        <guid isPermaLink="true">http://ashwin153.github.io/projects/2015/05/16/stocks/</guid>
         
+        
+        <category>projects</category>
         
       </item>
     
@@ -1117,10 +1161,12 @@
 
 &lt;p&gt;Cover photograph by &lt;a href=&quot;http://ww2.glance.net/wp-content/uploads/2015/01/salesforce_blog_image.jpg&quot;&gt;Ivan Brooker&lt;/a&gt;.&lt;/p&gt;
 </description>
-        <pubDate>Sun, 19 Apr 2015 21:20:00 -0700</pubDate>
-        <link>http://ashwin153.github.io/2015/04/19/pacman/</link>
-        <guid isPermaLink="true">http://ashwin153.github.io/2015/04/19/pacman/</guid>
+        <pubDate>Sun, 19 Apr 2015 23:20:00 -0500</pubDate>
+        <link>http://ashwin153.github.io/projects/2015/04/19/pacman/</link>
+        <guid isPermaLink="true">http://ashwin153.github.io/projects/2015/04/19/pacman/</guid>
         
+        
+        <category>projects</category>
         
       </item>
     
@@ -1180,10 +1226,12 @@
 
 &lt;p&gt;Cover photograph from &lt;a href=&quot;http://blog.funeralone.com/funeralone-products/life-tributes/funeral-songs/&quot;&gt;Funer Alone&lt;/a&gt;&lt;/p&gt;
 </description>
-        <pubDate>Thu, 06 Nov 2014 03:20:00 -0800</pubDate>
-        <link>http://ashwin153.github.io/2014/11/06/music/</link>
-        <guid isPermaLink="true">http://ashwin153.github.io/2014/11/06/music/</guid>
+        <pubDate>Thu, 06 Nov 2014 05:20:00 -0600</pubDate>
+        <link>http://ashwin153.github.io/projects/2014/11/06/music/</link>
+        <guid isPermaLink="true">http://ashwin153.github.io/projects/2014/11/06/music/</guid>
         
+        
+        <category>projects</category>
         
       </item>
     

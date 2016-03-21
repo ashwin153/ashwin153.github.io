@@ -1,0 +1,75 @@
+<p>The full code and documentation is available on <a href="https://github.com/ashwin153/stocks">Github</a>.</p>
+
+<h1 id="what-is-a-dcf">What is a DCF?</h1>
+<p>If you were offered $1 today or $1 a year from now, which would you take? A smart businessman would take the dollar today. Why? Because the present value of the future $1, is actually only around 90¢ after adjusting for inflation and other economic factors. The idea that money in the future is worth less in the present is often referred to as the <strong>time value of money</strong>, and it is the fundamental principle behind discounted cash flow analysis.</p>
+
+<p>The share price of a company is equal to its present value divided by its total number of outstanding shares. If it were possible to know both how much a company will be worth in future and how much that future value is worth in the present, it would be possible to determine what the share price of the company <em>should be</em> right now (fair value). In reality, there are only two ways of knowing either of these for certain: you are God or you are cheating. The purpose of discounted cash flow analysis is to <em>estimate</em> the fair value of a company by approximating its future free cash flows and discounting that amount by some reasonable rate to compensate for inflation, risk, and the passage of time. If this estimated fair value of the company is less than its current share price, the stock is likely overvalued and represents a sell opportunity and if the fair value is greater than the current share price, the stock is likely undervalued and represents a buy opportunity.</p>
+
+<h1 id="determining-free-cash-flow">Determining Free Cash Flow</h1>
+<p>It turns out that free cash flow is a very well defined concept in financial circles. Free cash flow measures how much cash a business has after subtracting out expenditures, taxes, and investments. Therefore, determining <em>future</em> free cash flow simply requires forecasting future revenues and subtracting out future expenditures, taxes, and investments. I developed an automated forecasting engine that utilizes a series of neural networks to predict the future free cash flows of any publicly traded company.</p>
+
+<h3 id="give-me-data-or-give-me-death">Give me data or give me death</h3>
+<p>Neural networks are useless without training data. Luckily, the Securities and Exchange Commission (SEC) publishes massive datasets containing every financial document from every publicly traded company. I developed a SQL script that parses these datasets, extracts out useful information, and stores it inside a relational database from which I can efficiently store and effectively query the data. Once I had scraped and stored the data, I utilized the Hibernate ORM framework to map my Java models to database tables and to gain access to the powerful Hibernate Criteria API.</p>
+
+<h3 id="too-much-of-a-good-thing">Too much of a good thing</h3>
+<p>My SEC parser ended up working much, much better than I expected. I ended up with <strong>18,105,547</strong> data points for <strong>9,303</strong> unique companies spread across <strong>450</strong> industries. In order to deal with the massive volume of data, I developed an algorithm to filter out the less important data points. This algorithm first categorizes companies by industry (using their sic codes) and then determines which data points appear <em>most often</em> in financial statements for companies within a particular industrial sector (e.g., “Oil and Gas Revenues” appears very often in financial statements for Crude Petroleum &amp; Natural Gas companies, so it is considered to be an “important” data point for companies in that sector).</p>
+
+<h3 id="designing-the-neural-networks">Designing the neural networks</h3>
+<p>The automated forecasting engine is composed of a collection of neural networks, each of which outputs the predicted quarter-over-quarter growth rate of a different component of the free cash flow formula using the “most important” data points as inputs. This quarter-over-quarter growth rate is then multiplied by current actuals to predict future values. These networks were then trained via backpropagation on historical SEC financial data.</p>
+
+<h3 id="preliminary-results">Preliminary results</h3>
+<p>The forecasting engine worked surprisingly well! I trained the engine on sic code 1311 (Crude Petroleum &amp; Natural Gas) and then used the engine to forecast the future free cash flow of Apco Oil and Gas International, Inc. By applying some of the same optimization techniques that I used when computing revenues and operating costs, I believe I can substantially reduce the errors in some of the other measurements.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: left">Term</th>
+      <th style="text-align: center">Predicted (MUSD)</th>
+      <th style="text-align: center">Actual (MUSD)</th>
+      <th style="text-align: left">Error</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: left">Revenues</td>
+      <td style="text-align: center">45.39</td>
+      <td style="text-align: center">46.34</td>
+      <td style="text-align: left">-2.05%</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">Operating Costs</td>
+      <td style="text-align: center">35.85</td>
+      <td style="text-align: center">35.05</td>
+      <td style="text-align: left">2.28%</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">Taxes</td>
+      <td style="text-align: center">4.14</td>
+      <td style="text-align: center">4.48</td>
+      <td style="text-align: left">-7.59%</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">Investments</td>
+      <td style="text-align: center">4.76</td>
+      <td style="text-align: center">5.81</td>
+      <td style="text-align: left">18.07%</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">Assets</td>
+      <td style="text-align: center">87.43</td>
+      <td style="text-align: center">76.25</td>
+      <td style="text-align: left">14.66%</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">Liabilities</td>
+      <td style="text-align: center">47.25</td>
+      <td style="text-align: center">38.69</td>
+      <td style="text-align: left">22.12%</td>
+    </tr>
+  </tbody>
+</table>
+
+<h1 id="determining-the-discount-rate">Determining the Discount Rate</h1>
+<p>Work in progress! Check back for updates.</p>
+
+<p>Cover photograph from <a href="http://www.nepseforum.com/">Nepse Forum</a>.</p>
