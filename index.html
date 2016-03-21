@@ -14,7 +14,7 @@ description: "My corner of the internet"
         </h3>
         {% endif %}
     </a>
-    <p class="post-meta">Posted by {% if post.author %}{{ post.author }}{% else %}{{ site.title }}{% endif %} on {{ post.date | date: "%B %-d, %Y" }}{% if post.category %} to <mark>{{ post.category }}</mark>{% endif %}</p>
+    <p class="post-meta">Posted by {% if post.author %}{{ post.author }}{% else %}{{ site.title }}{% endif %} on {{ post.date | date: "%B %-d, %Y" }}{% if post.category %} to <font color="#FF0000">{{ post.category }}</font>{% endif %}</p>
 </div>
 <hr>
 {% endfor %}
