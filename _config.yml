@@ -10,6 +10,7 @@ github_username:  ashwin153
 facebook_username:  ashwin.madavan
 
 # Build settings
+gems: [jekyll-paginate]
 markdown: kramdown
 kramdown:
   input: GFM # Enable GitHub Flavored Markdown (fenced code blocks)
