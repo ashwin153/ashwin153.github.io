@@ -1,6 +1,12 @@
-# Ashwin Madavan
-* [Website](http://madavan.me)
-* [Mirror](http://madavan.com)
+# Blog
+- [Website](http://madavan.me)
+- [Mirror](http://madavan.com)
 
-# Thanks
-* [Clean Blog Template](http://startbootstrap.com/)
+# Tools
+- [Namecheap](https://ap.www.namecheap.com/dashboard)
+- [Google Analytics](https://analytics.google.com)
+- [Google Webmaster Tools](https://www.google.com/webmasters/tools/home?hl=en)
+
+# Attribution
+Here's a little page-rank karma for all the sources I used:
+- [Clean Blog Template](http://startbootstrap.com/)
