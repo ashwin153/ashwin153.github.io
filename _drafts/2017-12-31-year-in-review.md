@@ -8,7 +8,7 @@ author:         "Ashwin Madavan"
 header-img:     "img/review-bg.jpg"
 ---
 # A Year in Review
-At the beginning of the year, I made a resolution to read at least two book each month and to watch at least two new movies. While I wasn't diligent enough to meet my quota each month, I surpassed my goals for the year reading 18 new books and watching 30 new movies!
+At the beginning of the year, I made a resolution to read at least two book each month and to watch at least two new movies. While I wasn't diligent enough to meet my quota each month, I surpassed my goals for the year reading 18 new books and watching 31 new movies!
 
 ## January
 - **Book**: David and Goliath, *Malcolm Gladwell*
@@ -75,5 +75,6 @@ At the beginning of the year, I made a resolution to read at least two book each
 - **Movie**: Wolf on Wall Street
 - **Movie**: The Prestige
 - **Movie**: Gangs of New York
+- **Movie**: Kingsman
 
 Cover photograph by [The Odyssey Online](https://www.theodysseyonline.com/time-alters-things).
