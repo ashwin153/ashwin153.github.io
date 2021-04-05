@@ -42,7 +42,7 @@ $$\begin{align*}r(c_{1}, c_{2}) r(c_{2}, c_{3}) \ldots r(c_{k-1}, c_{k}) r(c_{k}
 \log r(c_{1}, c_{2}) + \log r(c_{2}, c_{3}) + \ldots + \log r(c_{k-1}, c_{k}) + \log r(c_{k}, c_{1}) &> 0\\
 \log \frac{1}{r(c_{1}, c_{2})} + \log \frac{1}{r(c_{2}, c_{3})} + \ldots + \log \frac{1}{r(c_{k-1}, c_{k})} + \log \frac{1}{r(c_{k}, c_{1})} &< 0\end{align*}$$
 
-Therefore, detecting arbitrage opportunities in $$G$$ is equivalent to finding negative cost cycles in the graph $$G' = (C, \{ \log \frac{1}{r} : r \in R\})$$, which can be found in $$O(\lvert C \rvert ^{3})$$ using the Floyd-Warshall Algorithm.
+Therefore, detecting arbitrage opportunities in $$G$$ is equivalent to finding negative cost cycles in the graph $$G' = (C, \{ \log \frac{1}{r} : r \in R\})$$, which can be found in $$O(\lvert CR \rvert)$$ using the Bellman-Ford Algorithm.
 
 # Tiling
 **How many ways can one tile a 3 x n rectangle using 2 x 1 tiles?** It is immediately clear that $$n$$ must be even, because it is impossible to tile an odd area with even area tiles. Therefore, $$n = 2 \cdot k$$ and $$k \in \mathbb{N}$$. By enumerating the various ways to tile 2 x 1 tiles on a 3 x $$2 \cdot k$$ rectangle for $$k \in \{1, 2, 3\}$$, I determined that the number of tilings: 
